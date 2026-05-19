@@ -1,0 +1,51 @@
+<div class="page-container">
+  <div class="page-header">
+    <h2>Inmate List</h2>
+    <p class="page-description">View and manage all registered inmates.</p>
+  </div>
+
+  <div class="table-card">
+    <div class="table-toolbar">
+      <input type="text" class="search-input" placeholder="Search inmates...">
+      <button class="btn btn-primary" routerLink="/inmate-management/add-update">
+        + Add Inmate
+      </button>
+    </div>
+
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Inmate ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Facility</th>
+            <th>Status</th>
+            <th>Admission Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let inmate of inmates">
+            <td>{{ inmate.id }}</td>
+            <td>{{ inmate.firstName }}</td>
+            <td>{{ inmate.lastName }}</td>
+            <td>{{ inmate.facility }}</td>
+            <td>
+              <span class="status-badge" [ngClass]="{
+                'status-active': inmate.status === 'Active',
+                'status-released': inmate.status === 'Released',
+                'status-transferred': inmate.status === 'Transferred'
+              }">{{ inmate.status }}</span>
+            </td>
+            <td>{{ inmate.admissionDate }}</td>
+            <td>
+              <button class="btn-icon" title="Edit" routerLink="/inmate-management/add-update">✏️</button>
+              <button class="btn-icon" title="View">👁️</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

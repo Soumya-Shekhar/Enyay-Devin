@@ -1,0 +1,62 @@
+<aside class="app-sidebar" [class.collapsed]="isCollapsed">
+  <!-- Branding -->
+  <div class="sidebar-brand" *ngIf="!isCollapsed">
+    <div class="brand-logo">
+      <i class="pi pi-shield brand-icon"></i>
+    </div>
+    <div class="brand-text">
+      <span class="brand-name">eNyay Setu</span>
+      <span class="brand-tagline">Video & Calling Application</span>
+    </div>
+  </div>
+  <div class="sidebar-brand brand-collapsed" *ngIf="isCollapsed">
+    <i class="pi pi-shield brand-icon"></i>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="sidebar-nav">
+    <ul class="nav-list">
+      <li class="nav-item" *ngFor="let item of navItems">
+        <!-- Simple nav item (no children) -->
+        <a *ngIf="!item.children"
+           [routerLink]="item.route"
+           routerLinkActive="active"
+           class="nav-link">
+          <i class="pi {{ item.icon }} nav-icon"></i>
+          <span class="nav-label" *ngIf="!isCollapsed">{{ item.label }}</span>
+        </a>
+
+        <!-- Parent nav item with children -->
+        <div *ngIf="item.children" class="nav-parent">
+          <a class="nav-link parent-link"
+             [class.active]="item.isExpanded"
+             (click)="toggleSubmenu(item)">
+            <i class="pi {{ item.icon }} nav-icon"></i>
+            <span class="nav-label" *ngIf="!isCollapsed">{{ item.label }}</span>
+            <i class="pi pi-chevron-down expand-arrow" *ngIf="!isCollapsed" [class.expanded]="item.isExpanded"></i>
+          </a>
+
+          <!-- Submenu -->
+          <ul class="submenu" *ngIf="item.isExpanded && !isCollapsed">
+            <li *ngFor="let child of item.children">
+              <a [routerLink]="child.route"
+                 routerLinkActive="active"
+                 class="nav-link submenu-link">
+                <i class="pi {{ child.icon }} submenu-icon"></i>
+                <span class="nav-label">{{ child.label }}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Logout -->
+  <div class="sidebar-footer">
+    <button class="nav-link logout-link" (click)="logout()">
+      <i class="pi pi-sign-out nav-icon"></i>
+      <span class="nav-label" *ngIf="!isCollapsed">Logout</span>
+    </button>
+  </div>
+</aside>

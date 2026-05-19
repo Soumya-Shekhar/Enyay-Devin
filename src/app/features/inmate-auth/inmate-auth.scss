@@ -1,0 +1,164 @@
+.inmate-auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e8edf5 0%, #d5dde8 50%, #c8d5e3 100%);
+  padding: 2rem;
+}
+
+.auth-container {
+  text-align: center;
+  max-width: 900px;
+  width: 100%;
+}
+
+.auth-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #1e3a5f;
+  margin: 0 0 0.5rem 0;
+}
+
+.auth-subtitle {
+  font-size: 1rem;
+  color: #5a6f8a;
+  margin: 0 0 2.5rem 0;
+}
+
+// --- Cards Grid ---
+.auth-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.auth-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e3a5f;
+  margin: 0;
+}
+
+.card-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e0ecf8, #cde0f5);
+
+  i {
+    font-size: 2.25rem;
+    color: #3b6fa0;
+  }
+
+  &.face-icon {
+    background: linear-gradient(135deg, #fce4d6, #f5d0b8);
+    border-radius: 12px;
+
+    i {
+      color: #8b5e3c;
+    }
+  }
+}
+
+.card-body {
+  min-height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.prison-id-input {
+  width: 100%;
+  max-width: 180px;
+  text-align: center;
+}
+
+.phone-number {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+  margin: 0;
+}
+
+.scan-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #9ca3af;
+  font-size: 0.85rem;
+
+  i {
+    font-size: 1.1rem;
+  }
+
+  &.scanned {
+    color: #22c55e;
+    font-weight: 500;
+
+    i {
+      color: #22c55e;
+    }
+  }
+}
+
+.card-action {
+  margin-top: auto;
+}
+
+// --- PrimeNG Overrides ---
+:host ::ng-deep {
+  .action-btn {
+    min-width: 160px;
+    font-size: 0.85rem;
+  }
+
+  .p-inputtext {
+    font-size: 0.85rem;
+    padding: 0.5rem 0.75rem;
+    text-align: center;
+    border-radius: 8px;
+  }
+}
+
+// --- Responsive ---
+@media (max-width: 768px) {
+  .auth-cards {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+
+  .auth-title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .auth-cards {
+    gap: 1rem;
+  }
+}

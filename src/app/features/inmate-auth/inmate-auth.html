@@ -1,0 +1,60 @@
+<div class="inmate-auth-page">
+  <div class="auth-container">
+    <h1 class="auth-title">Inmate Authentication</h1>
+    <p class="auth-subtitle">Please authenticate before initiating audio or video call</p>
+
+    <div class="auth-cards">
+      <!-- Card 1: Prison ID -->
+      <div class="auth-card">
+        <h3 class="card-title">Prison ID</h3>
+        <div class="card-icon">
+          <i class="pi pi-id-card"></i>
+        </div>
+        <div class="card-body">
+          <input pInputText type="text" [(ngModel)]="prisonId" placeholder="Enter Prison ID" class="prison-id-input" />
+          <p class="phone-number">{{ phoneNumber }}</p>
+        </div>
+        <div class="card-action">
+          <p-button label="Dial Audio Call" icon="pi pi-phone" severity="success"
+            [rounded]="true" (onClick)="dialAudioCall()" styleClass="action-btn" />
+        </div>
+      </div>
+
+      <!-- Card 2: Biometric -->
+      <div class="auth-card">
+        <h3 class="card-title">Biometric</h3>
+        <div class="card-icon">
+          <i class="pi pi-fingerprint"></i>
+        </div>
+        <div class="card-body">
+          <div class="scan-status" [class.scanned]="thumbScanned()">
+            <i class="pi" [ngClass]="thumbScanned() ? 'pi-check-circle' : 'pi-circle'"></i>
+            <span>{{ thumbScanned() ? 'Thumbprint Verified' : 'Ready to Scan' }}</span>
+          </div>
+        </div>
+        <div class="card-action">
+          <p-button label="Scan Thumbprint" icon="pi pi-fingerprint" severity="info"
+            [rounded]="true" (onClick)="scanThumbprint()" styleClass="action-btn" />
+        </div>
+      </div>
+
+      <!-- Card 3: Face Recognition -->
+      <div class="auth-card">
+        <h3 class="card-title">Face Recognition</h3>
+        <div class="card-icon face-icon">
+          <i class="pi pi-user"></i>
+        </div>
+        <div class="card-body">
+          <div class="scan-status" [class.scanned]="faceScanned()">
+            <i class="pi" [ngClass]="faceScanned() ? 'pi-check-circle' : 'pi-circle'"></i>
+            <span>{{ faceScanned() ? 'Face Verified' : 'Ready to Scan' }}</span>
+          </div>
+        </div>
+        <div class="card-action">
+          <p-button label="Start Video Call" icon="pi pi-video" severity="help"
+            [rounded]="true" (onClick)="startVideoCall()" styleClass="action-btn" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,239 @@
+$sidebar-bg: #0f1a2e;
+$sidebar-width: 260px;
+$sidebar-collapsed-width: 64px;
+$text-light: #c8d6e5;
+$text-muted: #8395a7;
+$active-bg: #1a2d4a;
+$hover-bg: #162540;
+$accent-blue: #3b82f6;
+$border-color: rgba(255, 255, 255, 0.06);
+
+.app-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: $sidebar-width;
+  background: linear-gradient(180deg, #0f1a2e 0%, #162540 100%);
+  transition: width 0.3s ease;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+
+  &.collapsed {
+    width: $sidebar-collapsed-width;
+  }
+}
+
+// Branding
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid $border-color;
+
+  &.brand-collapsed {
+    justify-content: center;
+    padding: 1rem;
+  }
+}
+
+.brand-logo {
+  flex-shrink: 0;
+}
+
+.brand-icon {
+  font-size: 1.75rem;
+  color: #60a5fa;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.brand-name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.brand-tagline {
+  font-size: 0.625rem;
+  color: $text-muted;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+// User Info
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid $border-color;
+}
+
+.user-avatar-wrapper {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #2d3f5e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.user-avatar-icon {
+  font-size: 1.25rem;
+}
+
+.user-name {
+  color: $text-light;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+// Navigation
+.sidebar-nav {
+  padding: 0.5rem 0;
+  flex: 1;
+}
+
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  margin: 0.125rem 0;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  color: $text-light;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  gap: 0.75rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  width: 100%;
+  font-size: 0.875rem;
+
+  &:hover {
+    background-color: $hover-bg;
+    color: #fff;
+  }
+
+  &.active {
+    background-color: $active-bg;
+    color: #fff;
+    border-left: 3px solid $accent-blue;
+    padding-left: calc(1.25rem - 3px);
+  }
+}
+
+.nav-icon {
+  font-size: 1.1rem;
+  min-width: 1.5rem;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.nav-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  flex: 1;
+}
+
+// Parent menu with expandable children
+.parent-link {
+  position: relative;
+
+  &.active {
+    background-color: $active-bg;
+    color: #fff;
+  }
+}
+
+.expand-arrow {
+  font-size: 0.7rem;
+  color: $text-muted;
+  transition: transform 0.3s ease;
+  transform: rotate(0deg);
+  margin-left: auto;
+
+  &.expanded {
+    transform: rotate(180deg);
+  }
+}
+
+// Submenu
+.submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.submenu-link {
+  padding: 0.625rem 1.25rem 0.625rem 2.5rem;
+  font-size: 0.8125rem;
+
+  &.active {
+    background-color: $active-bg;
+    color: #fff;
+    border-left: 3px solid $accent-blue;
+    padding-left: calc(2.5rem - 3px);
+  }
+}
+
+.submenu-icon {
+  color: $text-muted;
+  font-size: 0.75rem;
+  min-width: 1rem;
+}
+
+// Sidebar footer (logout)
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid $border-color;
+  padding: 0.5rem 0;
+}
+
+.logout-link {
+  color: $text-muted;
+
+  &:hover {
+    color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.1);
+  }
+}
+
+// Scrollbar styling
+.app-sidebar {
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+  }
+}

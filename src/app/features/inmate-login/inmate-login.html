@@ -1,0 +1,63 @@
+<div class="inmate-login-page">
+  <div class="login-container">
+    <h1 class="page-title">Inmate Authentication</h1>
+    <p class="page-subtitle">Please authenticate before initiating audio or video call</p>
+
+    <div class="auth-cards">
+      <!-- Card 1: Prison ID -->
+      <div class="auth-card">
+        <h3 class="card-title">Prison ID</h3>
+        <div class="card-icon prison-icon">
+          <i class="pi pi-id-card"></i>
+        </div>
+        <div class="card-body">
+          <input type="text" class="prison-id-input" [(ngModel)]="prisonId" placeholder="Enter Prison ID" />
+          <p class="phone-number">+91 9876543210</p>
+        </div>
+        <button class="btn-action btn-audio" (click)="dialAudioCall()">
+          <i class="pi pi-phone"></i> Dial Audio Call
+        </button>
+      </div>
+
+      <!-- Card 2: Biometric -->
+      <div class="auth-card">
+        <h3 class="card-title">Biometric</h3>
+        <div class="card-icon biometric-icon">
+          <i class="pi pi-fingerprint"></i>
+        </div>
+        <div class="card-body">
+          <div class="scan-status" [class.scanned]="thumbScanned">
+            <i class="pi" [ngClass]="thumbScanned ? 'pi-check-circle' : 'pi-circle'"></i>
+            <span>{{ thumbScanned ? 'Thumbprint Verified' : 'Ready to Scan' }}</span>
+          </div>
+        </div>
+        <button class="btn-action btn-biometric" (click)="scanThumbprint()">
+          <i class="pi pi-fingerprint"></i> Scan Thumbprint
+        </button>
+      </div>
+
+      <!-- Card 3: Face Recognition -->
+      <div class="auth-card">
+        <h3 class="card-title">Face Recognition</h3>
+        <div class="card-icon face-icon">
+          <i class="pi pi-user"></i>
+        </div>
+        <div class="card-body">
+          <div class="scan-status" [class.scanned]="faceScanned">
+            <i class="pi" [ngClass]="faceScanned ? 'pi-check-circle' : 'pi-circle'"></i>
+            <span>{{ faceScanned ? 'Face Verified' : 'Ready to Scan' }}</span>
+          </div>
+        </div>
+        <button class="btn-action btn-video" (click)="startVideoCall()">
+          <i class="pi pi-video"></i> Start Video Call
+        </button>
+      </div>
+    </div>
+
+    <p class="note-text"><strong>Note:</strong> All activities are monitored and recorded by prison authorities.</p>
+
+    <div class="admin-login-link">
+      <a routerLink="/login">Back to Admin Login</a>
+    </div>
+  </div>
+</div>

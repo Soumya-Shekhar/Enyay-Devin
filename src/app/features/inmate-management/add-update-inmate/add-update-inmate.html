@@ -1,0 +1,427 @@
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div>
+      <h2>Add / Update Inmate</h2>
+      <p class="breadcrumb">Home &gt; Inmate Management &gt; Add / Update Inmate</p>
+    </div>
+    <div class="header-right">
+      <div class="step-indicator">
+        Step <strong>{{ currentStep() }}</strong> of <strong>{{ totalSteps }}</strong>
+      </div>
+      <div class="header-user">
+        <span class="user-role">Jail Admin</span>
+        <span class="user-location">Central Jail</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <p-tabs [value]="activeTab()" (valueChange)="activeTab.set($event?.toString() ?? '0')">
+    <p-tablist>
+      <p-tab *ngFor="let step of steps; let i = index" [value]="i.toString()">
+        <span class="tab-step-number">{{ i + 1 }}</span>
+        <i [class]="step.icon"></i> {{ step.label }}
+      </p-tab>
+    </p-tablist>
+
+    <p-tabpanels>
+      <!-- ====== STEP 1: Inmate Details ====== -->
+      <p-tabpanel value="0">
+        <div class="section-card">
+          <h3 class="section-title">
+            <span class="section-number">1</span>
+            Inmate Details <span class="section-subtitle">(Create Login Credential)</span>
+          </h3>
+
+          <div class="form-grid">
+            <div class="form-field">
+              <label>Full Name <span class="required">*</span></label>
+              <input pInputText type="text" [(ngModel)]="inmate.fullName" placeholder="Enter full name" />
+            </div>
+            <div class="form-field">
+              <label>Son / Daughter Of <span class="required">*</span></label>
+              <input pInputText type="text" [(ngModel)]="inmate.sonDaughterOf" placeholder="Enter father's / mother's name" />
+            </div>
+            <div class="form-field">
+              <label>Gender <span class="required">*</span></label>
+              <div class="radio-group">
+                <div *ngFor="let g of genderOptions" class="radio-item">
+                  <p-radiobutton [value]="g.value" [(ngModel)]="inmate.gender" [inputId]="'gender_' + g.value" name="gender" />
+                  <label [for]="'gender_' + g.value">{{ g.label }}</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>Jail No. / ID <span class="required">*</span></label>
+              <input pInputText type="text" [(ngModel)]="inmate.jailNo" placeholder="Enter jail no. / id" />
+            </div>
+            <div class="form-field">
+              <label>Prison ID <span class="required">*</span></label>
+              <input pInputText type="text" [(ngModel)]="inmate.prisonId" placeholder="Enter prison id" />
+            </div>
+            <div class="form-field">
+              <label>Upload Photo</label>
+              <p-fileupload mode="basic" chooseLabel="Upload Photo" accept="image/*"
+                [maxFileSize]="2097152" chooseIcon="pi pi-upload" />
+              <small class="hint">JPG, PNG (Max. 2MB)</small>
+            </div>
+
+            <div class="form-field">
+              <label>Aadhar Card <span class="required">*</span></label>
+              <div class="upload-row">
+                <input pInputText type="text" placeholder="Enter Aadhar no." class="flex-input" />
+                <p-fileupload mode="basic" chooseLabel="Upload Aadhar" accept=".pdf,.jpg,.png"
+                  [maxFileSize]="2097152" chooseIcon="pi pi-upload" styleClass="upload-btn" />
+              </div>
+              <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
+            </div>
+            <div class="form-field">
+              <label>Passport No.</label>
+              <div class="upload-row">
+                <input pInputText type="text" [(ngModel)]="inmate.passportNo" placeholder="Enter passport no." class="flex-input" />
+                <p-fileupload mode="basic" chooseLabel="Upload Passport" accept=".pdf,.jpg,.png"
+                  [maxFileSize]="2097152" chooseIcon="pi pi-upload" styleClass="upload-btn" />
+              </div>
+              <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
+            </div>
+            <div class="form-field">
+              <label>Driving License No.</label>
+              <div class="upload-row">
+                <input pInputText type="text" [(ngModel)]="inmate.drivingLicenseNo" placeholder="Enter DL no." class="flex-input" />
+                <p-fileupload mode="basic" chooseLabel="Upload DL" accept=".pdf,.jpg,.png"
+                  [maxFileSize]="2097152" chooseIcon="pi pi-upload" styleClass="upload-btn" />
+              </div>
+              <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
+            </div>
+          </div>
+
+          <div class="biometric-row">
+            <div class="biometric-item">
+              <label>Thumb - Biometric <span class="required">*</span></label>
+              <div class="biometric-capture">
+                <p-button label="Capture Thumb" icon="pi pi-camera" severity="secondary" [outlined]="true" (onClick)="captureThumb('inmate')" />
+                <i *ngIf="inmate.thumbCaptured" class="pi pi-check-circle biometric-ok"></i>
+              </div>
+            </div>
+            <div class="biometric-item">
+              <label>Face Recognition <span class="required">*</span></label>
+              <div class="biometric-capture">
+                <p-button label="Capture Face" icon="pi pi-eye" severity="secondary" [outlined]="true" (onClick)="captureFace('inmate')" />
+                <i *ngIf="inmate.faceCaptured" class="pi pi-check-circle biometric-ok"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabpanel>
+
+      <!-- ====== STEP 2: Audio Contact ====== -->
+      <p-tabpanel value="1">
+        <div class="section-card">
+          <h3 class="section-title">
+            <span class="section-number">2</span>
+            Family Contact Details - Audio Call
+          </h3>
+
+          <div class="form-grid cols-2">
+            <div class="form-field">
+              <label>Full Name <span class="required">*</span></label>
+              <input pInputText type="text" [(ngModel)]="audioContact.fullName" placeholder="Enter full name" />
+            </div>
+            <div class="form-field">
+              <label>Son / Daughter Of <span class="required">*</span></label>
+              <input pInputText type="text" [(ngModel)]="audioContact.sonDaughterOf" placeholder="Enter father's / mother's name" />
+            </div>
+            <div class="form-field">
+              <label>Relation <span class="required">*</span></label>
+              <p-select [options]="relationOptions" [(ngModel)]="audioContact.relation"
+                optionLabel="label" optionValue="value" placeholder="Select relation" styleClass="w-full" />
+            </div>
+            <div class="form-field">
+              <label>Contact Number <span class="required">*</span></label>
+              <p-inputgroup>
+                <p-inputgroup-addon>+91</p-inputgroup-addon>
+                <input pInputText type="text" [(ngModel)]="audioContact.contactNumber" placeholder="Enter mobile number" />
+              </p-inputgroup>
+            </div>
+          </div>
+
+          <div class="form-grid cols-1" style="margin-top: 1rem;">
+            <div class="form-field">
+              <label>Aadhar Card <span class="required">*</span></label>
+              <p-fileupload mode="basic" chooseLabel="Upload Aadhar" accept=".pdf,.jpg,.png"
+                [maxFileSize]="2097152" chooseIcon="pi pi-upload" />
+              <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
+            </div>
+            <div class="form-field">
+              <label>SIM Owner Name Validation <span class="required">*</span></label>
+              <div class="upload-row">
+                <input pInputText type="text" [(ngModel)]="audioContact.simOwnerName" placeholder="Enter SIM owner name" class="flex-input" />
+                <p-button label="Validate" icon="pi pi-check" severity="success" (onClick)="validateSimOwner('audio')" />
+              </div>
+            </div>
+            <div class="form-field">
+              <label>SIM Affidavit <span class="required">*</span></label>
+              <p-fileupload mode="basic" chooseLabel="Upload SIM Affidavit" accept=".pdf,.jpg,.png"
+                [maxFileSize]="2097152" chooseIcon="pi pi-upload" />
+              <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
+            </div>
+          </div>
+
+          <div class="biometric-row">
+            <div class="biometric-item">
+              <label>Thumb - Biometric <span class="required">*</span></label>
+              <div class="biometric-capture">
+                <p-button label="Capture Thumb" icon="pi pi-camera" severity="secondary" [outlined]="true" (onClick)="captureThumb('audio')" />
+                <i *ngIf="audioThumbCaptured" class="pi pi-check-circle biometric-ok"></i>
+              </div>
+            </div>
+            <div class="biometric-item">
+              <label>Face Recognition <span class="required">*</span></label>
+              <div class="biometric-capture">
+                <p-button label="Capture Face" icon="pi pi-eye" severity="secondary" [outlined]="true" (onClick)="captureFace('audio')" />
+                <i *ngIf="audioFaceCaptured" class="pi pi-check-circle biometric-ok"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabpanel>
+
+      <!-- ====== STEP 3: Video Contact ====== -->
+      <p-tabpanel value="2">
+        <div class="section-card">
+          <h3 class="section-title">
+            <span class="section-number">3</span>
+            Family Contact Details - Video Call
+          </h3>
+
+          <div class="form-grid cols-2">
+            <div class="form-field">
+              <label>Full Name <span class="required">*</span></label>
+              <input pInputText type="text" [(ngModel)]="videoContact.fullName" placeholder="Enter full name" />
+            </div>
+            <div class="form-field">
+              <label>Son / Daughter Of <span class="required">*</span></label>
+              <input pInputText type="text" [(ngModel)]="videoContact.sonDaughterOf" placeholder="Enter father's / mother's name" />
+            </div>
+            <div class="form-field">
+              <label>Relation <span class="required">*</span></label>
+              <p-select [options]="relationOptions" [(ngModel)]="videoContact.relation"
+                optionLabel="label" optionValue="value" placeholder="Select relation" styleClass="w-full" />
+            </div>
+            <div class="form-field">
+              <label>Contact Number <span class="required">*</span></label>
+              <p-inputgroup>
+                <p-inputgroup-addon>+91</p-inputgroup-addon>
+                <input pInputText type="text" [(ngModel)]="videoContact.contactNumber" placeholder="Enter mobile number" />
+              </p-inputgroup>
+            </div>
+            <div class="form-field span-2">
+              <label>eNyay Setu App ID <span class="required">*</span></label>
+              <input pInputText type="text" [(ngModel)]="videoContact.eNyayAppId" placeholder="Enter eNyay Setu App ID" />
+            </div>
+          </div>
+
+          <div class="form-grid cols-1" style="margin-top: 1rem;">
+            <div class="form-field">
+              <label>Aadhar Card <span class="required">*</span></label>
+              <p-fileupload mode="basic" chooseLabel="Upload Aadhar" accept=".pdf,.jpg,.png"
+                [maxFileSize]="2097152" chooseIcon="pi pi-upload" />
+              <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
+            </div>
+            <div class="form-field">
+              <label>SIM Affidavit <span class="required">*</span></label>
+              <p-fileupload mode="basic" chooseLabel="Upload SIM Affidavit" accept=".pdf,.jpg,.png"
+                [maxFileSize]="2097152" chooseIcon="pi pi-upload" />
+              <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
+            </div>
+          </div>
+
+          <div class="biometric-row">
+            <div class="biometric-item">
+              <label>Thumb - Biometric <span class="required">*</span></label>
+              <div class="biometric-capture">
+                <p-button label="Capture Thumb" icon="pi pi-camera" severity="secondary" [outlined]="true" (onClick)="captureThumb('video')" />
+                <i *ngIf="videoThumbCaptured" class="pi pi-check-circle biometric-ok"></i>
+              </div>
+            </div>
+            <div class="biometric-item">
+              <label>Face Recognition <span class="required">*</span></label>
+              <div class="biometric-capture">
+                <p-button label="Capture Face" icon="pi pi-eye" severity="secondary" [outlined]="true" (onClick)="captureFace('video')" />
+                <i *ngIf="videoFaceCaptured" class="pi pi-check-circle biometric-ok"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-tabpanel>
+
+      <!-- ====== STEP 4: Approval Workflow ====== -->
+      <p-tabpanel value="3">
+        <div class="section-card">
+          <h3 class="section-title">
+            <span class="section-number">4</span>
+            Approval Workflow <span class="section-subtitle">(Two Level Approval)</span>
+          </h3>
+
+          <div class="approval-grid">
+            <div class="approval-card">
+              <div class="approval-header">
+                <h4>Level 1: Jail Admin Approval</h4>
+                <p-tag [value]="approval.level1Status" [severity]="approval.level1Status === 'Approved' ? 'success' : approval.level1Status === 'Rejected' ? 'danger' : 'warn'" />
+              </div>
+              <div class="approval-connector">
+                <div class="connector-line"></div>
+                <span class="connector-arrow">&rarr;</span>
+                <div class="connector-line"></div>
+              </div>
+              <div class="approval-body">
+                <div class="form-field">
+                  <label>Remarks</label>
+                  <textarea pTextarea [(ngModel)]="approval.level1Remarks" placeholder="Enter remarks (optional)" rows="3"></textarea>
+                </div>
+              </div>
+              <div class="approval-actions">
+                <p-button label="Approve" icon="pi pi-check" severity="success" (onClick)="approveLevel(1)" />
+                <p-button label="Reject" icon="pi pi-times" severity="danger" (onClick)="rejectLevel(1)" />
+              </div>
+            </div>
+
+            <div class="approval-card">
+              <div class="approval-header">
+                <h4>Level 2: Superintendent Approval</h4>
+                <p-tag [value]="approval.level2Status" [severity]="approval.level2Status === 'Approved' ? 'success' : approval.level2Status === 'Rejected' ? 'danger' : 'warn'" />
+              </div>
+              <div class="approval-body">
+                <div class="form-field">
+                  <label>Forwarding Letter (Superintendent) <span class="required">*</span></label>
+                  <p-fileupload mode="basic" chooseLabel="Upload Forwarding Letter" accept=".pdf,.jpg,.png"
+                    [maxFileSize]="5242880" chooseIcon="pi pi-upload" />
+                  <small class="hint">PDF, JPG, PNG (Max. 5MB)</small>
+                </div>
+                <div class="form-field">
+                  <label>Remarks</label>
+                  <textarea pTextarea [(ngModel)]="approval.level2Remarks" placeholder="Enter remarks (optional)" rows="3"></textarea>
+                </div>
+              </div>
+              <div class="approval-actions">
+                <p-button label="Approve" icon="pi pi-check" severity="success" (onClick)="approveLevel(2)" />
+                <p-button label="Reject" icon="pi pi-times" severity="danger" (onClick)="rejectLevel(2)" />
+              </div>
+            </div>
+
+            <div class="final-status-card">
+              <h4>Final Status</h4>
+              <div class="status-icon">
+                <i class="pi pi-check-circle" [class.approved]="approval.finalStatus === 'Approved'"></i>
+              </div>
+              <p class="status-text">{{ approval.finalStatus }}</p>
+              <small *ngIf="approval.finalStatus === 'Waiting for approvals'">
+                Once approved by Superintendent, calling feature will be enabled.
+              </small>
+            </div>
+          </div>
+        </div>
+      </p-tabpanel>
+
+      <!-- ====== STEP 5: Wallet & Recharge ====== -->
+      <p-tabpanel value="4">
+        <div class="section-card">
+          <h3 class="section-title">
+            <span class="section-number">5</span>
+            Wallet & Recharge
+          </h3>
+
+          <div class="wallet-balance">
+            <span class="balance-label">Current Wallet Balance</span>
+            <span class="balance-amount">&#8377; {{ wallet.currentBalance | number:'1.2-2' }}</span>
+          </div>
+
+          <div class="form-grid cols-1">
+            <div class="form-field">
+              <label>Recharge Amount (&#8377;) <span class="required">*</span></label>
+              <input pInputText type="number" [(ngModel)]="wallet.rechargeAmount" placeholder="Enter amount" />
+            </div>
+          </div>
+
+          <div class="quick-amounts">
+            <p-button *ngFor="let amt of quickAmounts" [label]="amt.toString()" [outlined]="true"
+              severity="info" (onClick)="setQuickAmount(amt)" size="small" />
+          </div>
+
+          <p-button label="Add Recharge" icon="pi pi-plus" (onClick)="addRecharge()" />
+        </div>
+      </p-tabpanel>
+
+      <!-- ====== STEP 6: Activate Calling Feature ====== -->
+      <p-tabpanel value="5">
+        <div class="section-card">
+          <h3 class="section-title">
+            <span class="section-number">6</span>
+            Activate Calling Feature <span class="section-subtitle">(After Approval)</span>
+          </h3>
+
+          <div class="toggle-row">
+            <div class="toggle-item">
+              <span>Audio Calling</span>
+              <p-toggleswitch [(ngModel)]="callingFeature.audioCalling" />
+              <span class="toggle-label">{{ callingFeature.audioCalling ? 'Enable' : 'Disable' }}</span>
+            </div>
+            <div class="toggle-item">
+              <span>Video Calling</span>
+              <p-toggleswitch [(ngModel)]="callingFeature.videoCalling" />
+              <span class="toggle-label">{{ callingFeature.videoCalling ? 'Enable' : 'Disable' }}</span>
+            </div>
+          </div>
+        </div>
+      </p-tabpanel>
+
+      <!-- ====== STEP 7: Deactivate ====== -->
+      <p-tabpanel value="6">
+        <div class="section-card deactivate-card">
+          <h3 class="section-title">
+            <span class="section-number">7</span>
+            Deactivate Calling Feature
+          </h3>
+
+          <div class="form-grid cols-1">
+            <div class="form-field">
+              <label>Deactivation Reason <span class="required">*</span></label>
+              <p-select [options]="deactivationReasons" [(ngModel)]="deactivation.reason"
+                optionLabel="label" optionValue="value" placeholder="Select reason" styleClass="w-full" />
+            </div>
+            <div class="form-field">
+              <label>Upload Forwarding Letter / Court Order</label>
+              <p-fileupload mode="basic" chooseLabel="Upload Document" accept=".pdf,.jpg,.png"
+                [maxFileSize]="5242880" chooseIcon="pi pi-upload" />
+              <small class="hint">PDF, JPG, PNG (Max. 5MB)</small>
+            </div>
+            <div class="form-field">
+              <label>Remarks (Optional)</label>
+              <textarea pTextarea [(ngModel)]="deactivation.remarks" placeholder="Enter remarks" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+
+  <!-- Navigation & Submit Footer -->
+  <div class="form-footer">
+    <div class="footer-left">
+      <p-button label="Previous" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"
+        (onClick)="prevStep()" [disabled]="isFirstStep()" />
+    </div>
+    <div class="footer-right">
+      <p-button *ngIf="!isLastStep()" label="Next Step" icon="pi pi-arrow-right" iconPos="right"
+        (onClick)="nextStep()" />
+      <p-button *ngIf="isLastStep()" label="Submit All Details" icon="pi pi-check" severity="success"
+        (onClick)="submitAll()" />
+    </div>
+  </div>
+
+  <div class="security-note">
+    <i class="pi pi-lock"></i> All documents are securely stored and transmissions are encrypted.
+  </div>
+</div>
