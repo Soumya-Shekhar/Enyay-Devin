@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+import { PRIME_NG_MODULES } from '../../../shared/primeng/primeng-imports';
 
 export interface Inmate {
   id: string;
@@ -13,11 +15,13 @@ export interface Inmate {
 @Component({
   selector: 'app-inmate-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, ...PRIME_NG_MODULES],
   templateUrl: './inmate-list.html',
   styleUrls: ['./inmate-list.scss'],
 })
 export class InmateListComponent {
+  private router = inject(Router);
+
   inmates: Inmate[] = [
     { id: 'INM-001', firstName: 'John', lastName: 'Doe', facility: 'Facility A', status: 'Active', admissionDate: '2024-03-15' },
     { id: 'INM-002', firstName: 'Jane', lastName: 'Smith', facility: 'Facility B', status: 'Active', admissionDate: '2024-06-20' },
@@ -25,4 +29,12 @@ export class InmateListComponent {
     { id: 'INM-004', firstName: 'Emily', lastName: 'Davis', facility: 'Facility C', status: 'Transferred', admissionDate: '2024-01-12' },
     { id: 'INM-005', firstName: 'Michael', lastName: 'Wilson', facility: 'Facility B', status: 'Active', admissionDate: '2025-02-28' },
   ];
+
+  getFullName(inmate: Inmate): string {
+    return `${inmate.firstName} ${inmate.lastName}`;
+  }
+
+  editInmate(inmate: Inmate): void {
+    this.router.navigate(['/inmate-management/add-update', inmate.id]);
+  }
 }

@@ -1,17 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, input, output, signal, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { PRIME_NG_MODULES } from '../../../../shared/primeng/primeng-imports';
-import { InmateDataService } from '../inmate-data.service';
+import { InmateApiService } from '../inmate-api.service';
+
+interface SavePayload {
+  data: Record<string, unknown>;
+  ts: number;
+}
 
 @Component({
   selector: 'app-audio-contact',
   standalone: true,
-  imports: [CommonModule, FormsModule, ...PRIME_NG_MODULES],
+  imports: [CommonModule, ReactiveFormsModule, ...PRIME_NG_MODULES],
   templateUrl: './audio-contact.html',
   styleUrls: ['./audio-contact.scss'],
 })
 export class AudioContactComponent {
+  private apiService = inject(InmateApiService);
+
+  form = input.required<FormGroup>();
+  inmateId = input.required<string>();
+  saved = output<void>();
+
   relationOptions = [
     { label: 'Select relation', value: '' },
     { label: 'Father', value: 'Father' },
@@ -26,34 +38,29 @@ export class AudioContactComponent {
     { label: 'Other', value: 'Other' },
   ];
 
-  constructor(public inmateService: InmateDataService) {}
+  private saveRequest = signal<SavePayload | undefined>(undefined);
 
-  get audioContactData() {
-    return this.inmateService.audioContactData;
-  }
+  saveResource = rxResource({
+    params: () => this.saveRequest(),
+    stream: ({ params }) => {
+      return this.apiService.saveAudioContact(this.inmateId(), params.data);
+    },
+  });
 
-  get audioThumbCaptured() {
-    return this.inmateService.audioThumbCaptured;
-  }
-
-  get audioFaceCaptured() {
-    return this.inmateService.audioFaceCaptured;
-  }
-
-  captureThumb(): void {
-    this.inmateService.audioThumbCaptured.set(true);
-  }
-
-  captureFace(): void {
-    this.inmateService.audioFaceCaptured.set(true);
+  constructor() {
+    effect(() => {
+      const val = this.saveResource.value();
+      if (val && typeof val === 'object' && 'success' in val) {
+        this.saved.emit();
+      }
+    });
   }
 
   validateSimOwner(): void {
-    const contact = this.inmateService.audioContactData();
-    console.log('Validating SIM owner:', contact.simOwnerName);
+    console.log('Validating SIM owner:', this.form().get('simOwnerName')?.value);
   }
 
   save(): void {
-    this.inmateService.saveAudioContact();
+    this.saveRequest.set({ data: this.form().value, ts: Date.now() });
   }
 }

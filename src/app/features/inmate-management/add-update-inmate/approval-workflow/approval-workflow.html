@@ -4,66 +4,69 @@
     Approval Workflow <span class="section-subtitle">(Two Level Approval)</span>
   </h3>
 
-  <div class="approval-grid">
-    <div class="approval-card">
-      <div class="approval-header">
-        <h4>Level 1: Jail Admin Approval</h4>
-        <p-tag [value]="approvalData().level1Status" [severity]="approvalData().level1Status === 'Approved' ? 'success' : approvalData().level1Status === 'Rejected' ? 'danger' : 'warn'" />
-      </div>
-      <div class="approval-connector">
-        <div class="connector-line"></div>
-        <span class="connector-arrow">&rarr;</span>
-        <div class="connector-line"></div>
-      </div>
-      <div class="approval-body">
-        <div class="form-field">
-          <label>Remarks</label>
-          <textarea pTextarea [(ngModel)]="approvalData().level1Remarks" placeholder="Enter remarks (optional)" rows="3"></textarea>
+  <form [formGroup]="form()">
+    <div class="approval-grid">
+      <div class="approval-card">
+        <div class="approval-header">
+          <h4>Level 1: Jail Admin Approval</h4>
+          <p-tag [value]="form().get('level1Status')?.value" [severity]="form().get('level1Status')?.value === 'Approved' ? 'success' : form().get('level1Status')?.value === 'Rejected' ? 'danger' : 'warn'" />
+        </div>
+        <div class="approval-connector">
+          <div class="connector-line"></div>
+          <span class="connector-arrow">&rarr;</span>
+          <div class="connector-line"></div>
+        </div>
+        <div class="approval-body">
+          <div class="form-field">
+            <label>Remarks</label>
+            <textarea pTextarea formControlName="level1Remarks" placeholder="Enter remarks (optional)" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="approval-actions">
+          <p-button label="Approve" icon="pi pi-check" severity="success" (onClick)="approveLevel(1)" />
+          <p-button label="Reject" icon="pi pi-times" severity="danger" (onClick)="rejectLevel(1)" />
         </div>
       </div>
-      <div class="approval-actions">
-        <p-button label="Approve" icon="pi pi-check" severity="success" (onClick)="approveLevel(1)" />
-        <p-button label="Reject" icon="pi pi-times" severity="danger" (onClick)="rejectLevel(1)" />
-      </div>
-    </div>
 
-    <div class="approval-card">
-      <div class="approval-header">
-        <h4>Level 2: Superintendent Approval</h4>
-        <p-tag [value]="approvalData().level2Status" [severity]="approvalData().level2Status === 'Approved' ? 'success' : approvalData().level2Status === 'Rejected' ? 'danger' : 'warn'" />
-      </div>
-      <div class="approval-body">
-        <div class="form-field">
-          <label>Forwarding Letter (Superintendent) <span class="required">*</span></label>
-          <p-fileupload mode="basic" chooseLabel="Upload Forwarding Letter" accept=".pdf,.jpg,.png"
-            [maxFileSize]="5242880" chooseIcon="pi pi-upload" />
-          <small class="hint">PDF, JPG, PNG (Max. 5MB)</small>
+      <div class="approval-card">
+        <div class="approval-header">
+          <h4>Level 2: Superintendent Approval</h4>
+          <p-tag [value]="form().get('level2Status')?.value" [severity]="form().get('level2Status')?.value === 'Approved' ? 'success' : form().get('level2Status')?.value === 'Rejected' ? 'danger' : 'warn'" />
         </div>
-        <div class="form-field">
-          <label>Remarks</label>
-          <textarea pTextarea [(ngModel)]="approvalData().level2Remarks" placeholder="Enter remarks (optional)" rows="3"></textarea>
+        <div class="approval-body">
+          <div class="form-field">
+            <label>Forwarding Letter (Superintendent) <span class="required">*</span></label>
+            <p-fileupload mode="basic" chooseLabel="Upload Forwarding Letter" accept=".pdf,.jpg,.png"
+              [maxFileSize]="5242880" chooseIcon="pi pi-upload" />
+            <small class="hint">PDF, JPG, PNG (Max. 5MB)</small>
+          </div>
+          <div class="form-field">
+            <label>Remarks</label>
+            <textarea pTextarea formControlName="level2Remarks" placeholder="Enter remarks (optional)" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="approval-actions">
+          <p-button label="Approve" icon="pi pi-check" severity="success" (onClick)="approveLevel(2)" />
+          <p-button label="Reject" icon="pi pi-times" severity="danger" (onClick)="rejectLevel(2)" />
         </div>
       </div>
-      <div class="approval-actions">
-        <p-button label="Approve" icon="pi pi-check" severity="success" (onClick)="approveLevel(2)" />
-        <p-button label="Reject" icon="pi pi-times" severity="danger" (onClick)="rejectLevel(2)" />
-      </div>
-    </div>
 
-    <div class="final-status-card">
-      <h4>Final Status</h4>
-      <div class="status-icon">
-        <i class="pi pi-check-circle" [class.approved]="approvalData().finalStatus === 'Approved'"></i>
+      <div class="final-status-card">
+        <h4>Final Status</h4>
+        <div class="status-icon">
+          <i class="pi pi-check-circle" [class.approved]="form().get('finalStatus')?.value === 'Approved'"></i>
+        </div>
+        <p class="status-text">{{ form().get('finalStatus')?.value }}</p>
+        <small *ngIf="form().get('finalStatus')?.value === 'Waiting for approvals'">
+          Once approved by Superintendent, calling feature will be enabled.
+        </small>
       </div>
-      <p class="status-text">{{ approvalData().finalStatus }}</p>
-      <small *ngIf="approvalData().finalStatus === 'Waiting for approvals'">
-        Once approved by Superintendent, calling feature will be enabled.
-      </small>
     </div>
-  </div>
+  </form>
 
   <!-- Save Button -->
   <div class="component-footer">
-    <p-button label="Save Approval Workflow" icon="pi pi-save" severity="success" (onClick)="save()" />
+    <p-button label="Save Approval Workflow" icon="pi pi-save" severity="success" (onClick)="save()"
+      [loading]="saveResource.isLoading()" />
   </div>
 </div>
