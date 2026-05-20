@@ -1,0 +1,46 @@
+.floating-menu-toggle {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 1001;
+  
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.6);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+/* Adjust position when sidebar is collapsed */
+:host-context(.sidebar-collapsed-layout) .floating-menu-toggle {
+  left: 16px;
+}
+
+/* Hide on mobile and show at bottom */
+@media (max-width: 768px) {
+  .floating-menu-toggle {
+    bottom: 20px;
+    top: auto;
+    left: 20px;
+    width: 56px;
+    height: 56px;
+    font-size: 1.75rem;
+  }
+}

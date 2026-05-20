@@ -1,0 +1,85 @@
+.section-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 0 2rem 0;
+  font-size: 1.25rem;
+  color: #2c3e50;
+
+  .section-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 0.9rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.85rem;
+    color: #7f8c8d;
+    font-weight: normal;
+  }
+}
+
+.toggle-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  .toggle-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    background: white;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+
+    span:first-child {
+      font-weight: 500;
+      color: #2c3e50;
+    }
+
+    .toggle-label {
+      margin-left: 1rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      font-weight: 600;
+
+      &:has(+ ::ng-container) {
+        background: #d4edda;
+        color: #155724;
+      }
+    }
+  }
+}
+
+.component-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e0e0e0;
+}

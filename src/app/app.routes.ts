@@ -24,6 +24,12 @@ export const routes: Routes = [
       import('./features/inmate-auth/inmate-auth').then((m) => m.InmateAuthComponent),
   },
   {
+    path: 'inmate-welcome',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/inmate-welcome/inmate-welcome').then((m) => m.InmateWelcomeComponent),
+  },
+  {
     path: '',
     component: MainLayoutComponent,
     canActivate: [authGuard],

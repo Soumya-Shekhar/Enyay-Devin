@@ -1,0 +1,29 @@
+<div class="section-card deactivate-card">
+  <h3 class="section-title">
+    <span class="section-number">7</span>
+    Deactivate Calling Feature
+  </h3>
+
+  <div class="form-grid cols-1">
+    <div class="form-field">
+      <label>Deactivation Reason <span class="required">*</span></label>
+      <p-select [options]="deactivationReasons" [(ngModel)]="deactivationData().reason"
+        optionLabel="label" optionValue="value" placeholder="Select reason" styleClass="w-full" />
+    </div>
+    <div class="form-field">
+      <label>Upload Forwarding Letter / Court Order</label>
+      <p-fileupload mode="basic" chooseLabel="Upload Document" accept=".pdf,.jpg,.png"
+        [maxFileSize]="5242880" chooseIcon="pi pi-upload" />
+      <small class="hint">PDF, JPG, PNG (Max. 5MB)</small>
+    </div>
+    <div class="form-field">
+      <label>Remarks (Optional)</label>
+      <textarea pTextarea [(ngModel)]="deactivationData().remarks" placeholder="Enter remarks" rows="3"></textarea>
+    </div>
+  </div>
+
+  <!-- Save Button -->
+  <div class="component-footer">
+    <p-button label="Save Deactivation" icon="pi pi-save" severity="success" (onClick)="save()" />
+  </div>
+</div>

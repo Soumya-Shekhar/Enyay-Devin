@@ -1,0 +1,30 @@
+<div class="section-card">
+  <h3 class="section-title">
+    <span class="section-number">5</span>
+    Wallet & Recharge
+  </h3>
+
+  <div class="wallet-balance">
+    <span class="balance-label">Current Wallet Balance</span>
+    <span class="balance-amount">&#8377; {{ walletData().currentBalance | number:'1.2-2' }}</span>
+  </div>
+
+  <div class="form-grid cols-1">
+    <div class="form-field">
+      <label>Recharge Amount (&#8377;) <span class="required">*</span></label>
+      <input pInputText type="number" [(ngModel)]="walletData().rechargeAmount" placeholder="Enter amount" />
+    </div>
+  </div>
+
+  <div class="quick-amounts">
+    <p-button *ngFor="let amt of quickAmounts" [label]="amt.toString()" [outlined]="true"
+      severity="info" (onClick)="setQuickAmount(amt)" size="small" />
+  </div>
+
+  <p-button label="Add Recharge" icon="pi pi-plus" (onClick)="addRecharge()" />
+
+  <!-- Save Button -->
+  <div class="component-footer">
+    <p-button label="Save Wallet & Recharge" icon="pi pi-save" severity="success" (onClick)="save()" />
+  </div>
+</div>

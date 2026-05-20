@@ -1,0 +1,24 @@
+<div class="section-card">
+  <h3 class="section-title">
+    <span class="section-number">6</span>
+    Activate Calling Feature <span class="section-subtitle">(After Approval)</span>
+  </h3>
+
+  <div class="toggle-row">
+    <div class="toggle-item">
+      <span>Audio Calling</span>
+      <p-toggleswitch [(ngModel)]="callingFeatureData().audioCalling" />
+      <span class="toggle-label">{{ callingFeatureData().audioCalling ? 'Enable' : 'Disable' }}</span>
+    </div>
+    <div class="toggle-item">
+      <span>Video Calling</span>
+      <p-toggleswitch [(ngModel)]="callingFeatureData().videoCalling" />
+      <span class="toggle-label">{{ callingFeatureData().videoCalling ? 'Enable' : 'Disable' }}</span>
+    </div>
+  </div>
+
+  <!-- Save Button -->
+  <div class="component-footer">
+    <p-button label="Save Calling Feature" icon="pi pi-save" severity="success" (onClick)="save()" />
+  </div>
+</div>

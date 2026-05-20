@@ -22,18 +22,18 @@ export class InmateLoginComponent {
   dialAudioCall(): void {
     if (!this.prisonId) return;
     this.authService.setStaticAuth('inmate');
-    this.router.navigate(['/inmate-auth']);
+    this.router.navigate(['/inmate-welcome']);
   }
 
   scanThumbprint(): void {
     this.thumbScanned = true;
     this.authService.setStaticAuth('inmate');
-    this.router.navigate(['/inmate-auth']);
+    this.router.navigate(['/inmate-welcome']);
   }
 
   startVideoCall(): void {
     this.faceScanned = true;
     this.authService.setStaticAuth('inmate');
-    this.router.navigate(['/inmate-auth']);
+    this.router.navigate(['/inmate-welcome']);
   }
 }

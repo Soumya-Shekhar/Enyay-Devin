@@ -1,0 +1,60 @@
+<div class="welcome-page">
+  <!-- Branding -->
+  <div class="branding">
+    <div class="brand-icon">
+      <i class="pi pi-shield"></i>
+    </div>
+    <div class="brand-text">
+      <h1 class="brand-name">eNyay Setu</h1>
+      <p class="brand-tagline">Secure Communication for Inmates</p>
+    </div>
+  </div>
+
+  <!-- Welcome Section -->
+  <div class="welcome-section">
+    <h2 class="welcome-title">Welcome, {{ inmateName }}</h2>
+    <p class="welcome-subtitle">Select an option to establish a communication<br>link with your family.</p>
+  </div>
+
+  <!-- Call Cards -->
+  <div class="call-cards">
+    <!-- Audio Call Card -->
+    <div class="call-card">
+      <h3 class="card-header">Audio Call</h3>
+      <p class="card-sub">Mobile Number</p>
+
+      <div class="card-icon audio-icon">
+        <i class="pi pi-phone"></i>
+      </div>
+
+      <h4 class="card-label">Audio Call</h4>
+      <p class="card-detail-label">Mobile Number</p>
+      <p class="card-detail-value">{{ mobileNumber }}</p>
+
+      <button class="btn-call btn-audio" (click)="dialAudioCall()">
+        <i class="pi pi-phone"></i> Dial Audio Call
+      </button>
+    </div>
+
+    <!-- Video Call Card -->
+    <div class="call-card">
+      <h3 class="card-header">Video Call</h3>
+      <p class="card-sub">Web ID</p>
+
+      <div class="card-icon video-icon">
+        <i class="pi pi-video"></i>
+      </div>
+
+      <h4 class="card-label">Video Call</h4>
+      <p class="card-detail-label">Web ID</p>
+      <p class="card-detail-value">{{ webId }}</p>
+
+      <button class="btn-call btn-video" (click)="startVideoCall()">
+        <i class="pi pi-video"></i> Start Video Call
+      </button>
+    </div>
+  </div>
+
+  <!-- Note -->
+  <p class="note-text"><strong>Note:</strong> All activities are monitored and recorded by prison authorities.</p>
+</div>
