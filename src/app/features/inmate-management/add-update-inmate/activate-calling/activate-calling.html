@@ -4,21 +4,24 @@
     Activate Calling Feature <span class="section-subtitle">(After Approval)</span>
   </h3>
 
-  <div class="toggle-row">
-    <div class="toggle-item">
-      <span>Audio Calling</span>
-      <p-toggleswitch [(ngModel)]="callingFeatureData().audioCalling" />
-      <span class="toggle-label">{{ callingFeatureData().audioCalling ? 'Enable' : 'Disable' }}</span>
+  <form [formGroup]="form()">
+    <div class="toggle-row">
+      <div class="toggle-item">
+        <span>Audio Calling</span>
+        <p-toggleswitch formControlName="audioCalling" />
+        <span class="toggle-label">{{ form().get('audioCalling')?.value ? 'Enable' : 'Disable' }}</span>
+      </div>
+      <div class="toggle-item">
+        <span>Video Calling</span>
+        <p-toggleswitch formControlName="videoCalling" />
+        <span class="toggle-label">{{ form().get('videoCalling')?.value ? 'Enable' : 'Disable' }}</span>
+      </div>
     </div>
-    <div class="toggle-item">
-      <span>Video Calling</span>
-      <p-toggleswitch [(ngModel)]="callingFeatureData().videoCalling" />
-      <span class="toggle-label">{{ callingFeatureData().videoCalling ? 'Enable' : 'Disable' }}</span>
-    </div>
-  </div>
+  </form>
 
   <!-- Save Button -->
   <div class="component-footer">
-    <p-button label="Save Calling Feature" icon="pi pi-save" severity="success" (onClick)="save()" />
+    <p-button label="Save Calling Feature" icon="pi pi-save" severity="success" (onClick)="save()"
+      [loading]="saveResource.isLoading()" />
   </div>
 </div>

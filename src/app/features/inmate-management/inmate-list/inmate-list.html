@@ -17,9 +17,7 @@
         <thead>
           <tr>
             <th>Prison ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <!-- <th>Facility</th> -->
+            <th>Full Name</th>
             <th>Status</th>
             <th>Admission Date</th>
             <th>Actions</th>
@@ -28,9 +26,7 @@
         <tbody>
           <tr *ngFor="let inmate of inmates">
             <td>{{ inmate.id }}</td>
-            <td>{{ inmate.firstName }}</td>
-            <td>{{ inmate.lastName }}</td>
-            <!-- <td>{{ inmate.facility }}</td> -->
+            <td>{{ getFullName(inmate) }}</td>
             <td>
               <span
                 class="status-badge"
@@ -44,10 +40,9 @@
             </td>
             <td>{{ inmate.admissionDate }}</td>
             <td>
-              <button class="btn-icon" title="Edit" routerLink="/inmate-management/add-update">
-                ✏️
+              <button class="btn-icon" title="Edit" (click)="editInmate(inmate)">
+                <i class="pi pi-pencil"></i>
               </button>
-              <!-- <button class="btn-icon" title="View">👁️</button> -->
             </td>
           </tr>
         </tbody>

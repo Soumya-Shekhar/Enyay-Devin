@@ -8,6 +8,11 @@ export const inmateManagementRoutes: Routes = [
       import('./add-update-inmate/add-update-inmate').then((m) => m.AddUpdateInmateComponent),
   },
   {
+    path: 'add-update/:id',
+    loadComponent: () =>
+      import('./add-update-inmate/add-update-inmate').then((m) => m.AddUpdateInmateComponent),
+  },
+  {
     path: 'recent-requests',
     loadComponent: () =>
       import('./recent-requests/recent-requests').then((m) => m.RecentRequestsComponent),

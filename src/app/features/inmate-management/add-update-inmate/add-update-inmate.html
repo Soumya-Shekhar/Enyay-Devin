@@ -2,8 +2,8 @@
   <!-- Page Header -->
   <div class="page-header">
     <div>
-      <h2>Add / Update Inmate</h2>
-      <p class="breadcrumb">Home &gt; Inmate Management &gt; Add / Update Inmate</p>
+      <h2>{{ isEditMode() ? 'Update' : 'Add' }} Inmate</h2>
+      <p class="breadcrumb">Home &gt; Inmate Management &gt; {{ isEditMode() ? 'Update' : 'Add' }} Inmate</p>
     </div>
     <div class="header-right">
       <div class="step-indicator">
@@ -28,37 +28,37 @@
     <p-tabpanels>
       <!-- Step 1: Inmate Details -->
       <p-tabpanel value="0">
-        <app-inmate-details></app-inmate-details>
+        <app-inmate-details [form]="inmateDetailsForm" [inmateId]="inmateId()" (saved)="onSaved()"></app-inmate-details>
       </p-tabpanel>
 
       <!-- Step 2: Audio Contact -->
       <p-tabpanel value="1">
-        <app-audio-contact></app-audio-contact>
+        <app-audio-contact [form]="audioContactForm" [inmateId]="inmateId()" (saved)="onSaved()"></app-audio-contact>
       </p-tabpanel>
 
       <!-- Step 3: Video Contact -->
       <p-tabpanel value="2">
-        <app-video-contact></app-video-contact>
+        <app-video-contact [form]="videoContactForm" [inmateId]="inmateId()" (saved)="onSaved()"></app-video-contact>
       </p-tabpanel>
 
       <!-- Step 4: Approval Workflow -->
       <p-tabpanel value="3">
-        <app-approval-workflow></app-approval-workflow>
+        <app-approval-workflow [form]="approvalForm" [inmateId]="inmateId()" (saved)="onSaved()"></app-approval-workflow>
       </p-tabpanel>
 
       <!-- Step 5: Wallet & Recharge -->
       <p-tabpanel value="4">
-        <app-wallet-recharge></app-wallet-recharge>
+        <app-wallet-recharge [form]="walletForm" [inmateId]="inmateId()" (saved)="onSaved()"></app-wallet-recharge>
       </p-tabpanel>
 
       <!-- Step 6: Activate Calling -->
       <p-tabpanel value="5">
-        <app-activate-calling></app-activate-calling>
+        <app-activate-calling [form]="callingFeatureForm" [inmateId]="inmateId()" (saved)="onSaved()"></app-activate-calling>
       </p-tabpanel>
 
       <!-- Step 7: Deactivate Calling -->
       <p-tabpanel value="6">
-        <app-deactivate-calling></app-deactivate-calling>
+        <app-deactivate-calling [form]="deactivationForm" [inmateId]="inmateId()" (saved)="onSaved()"></app-deactivate-calling>
       </p-tabpanel>
     </p-tabpanels>
   </p-tabs>
