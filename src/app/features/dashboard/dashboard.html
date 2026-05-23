@@ -14,7 +14,295 @@
   <div class="dashboard-content">
     <div class="card">
       <h3>Recent Activity</h3>
-      <p class="placeholder-text">Activity feed will be displayed here.</p>
+
+      <!-- Tabs for Ongoing and Ended Calls -->
+      <p-tabs [value]="'0'">
+        <p-tablist>
+          <p-tab value="0">
+            <span><i class="pi pi-phone"></i> Ongoing Calls</span>
+          </p-tab>
+          <p-tab value="1">
+            <span><i class="pi pi-times-circle"></i> Already Ended Calls</span>
+          </p-tab>
+        </p-tablist>
+
+        <p-tabpanels>
+          <!-- Ongoing Calls Tab Panel -->
+          <p-tabpanel value="0">
+            <div class="calls-table-container">
+              <p-table
+                [value]="ongoingCalls"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                styleClass="p-datatable-sm p-datatable-striped"
+                [paginator]="true"
+                [rows]="5"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} calls"
+              >
+                <ng-template #header>
+                  <tr>
+                    <th style="width: 15%">Prison ID</th>
+                    <th style="width: 20%">Prisoner Name</th>
+                    <th style="width: 15%">Call Type</th>
+                    <th style="width: 15%">Connected Since</th>
+                    <th style="width: 20%">Connected With</th>
+                    <th style="width: 15%">Action</th>
+                  </tr>
+                </ng-template>
+                <ng-template #body let-call>
+                  <tr>
+                    <td>{{ call.prisonId }}</td>
+                    <td>{{ call.prisonerName }}</td>
+                    <td>
+                      <p-tag
+                        [value]="call.callType | titlecase"
+                        [severity]="call.callType === 'audio' ? 'info' : 'success'"
+                      />
+                    </td>
+                    <td>{{ call.startTime | date: 'short' }}</td>
+                    <td>{{ call.connectedWith.name }}</td>
+                    <td>
+                      <p-button
+                        icon="pi pi-eye"
+                        [rounded]="true"
+                        [text]="true"
+                        severity="info"
+                        (click)="viewOngoingCall(call)"
+                        pTooltip="View Details"
+                        tooltipPosition="top"
+                      />
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template #emptymessage>
+                  <tr>
+                    <td colspan="6" class="text-center">
+                      <div class="empty-state">
+                        <i class="pi pi-phone"></i>
+                        <p>No ongoing calls</p>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </p-tabpanel>
+
+          <!-- Already Ended Calls Tab Panel -->
+          <p-tabpanel value="1">
+            <div class="calls-table-container">
+              <p-table
+                [value]="endedCalls"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                styleClass="p-datatable-sm p-datatable-striped"
+                [paginator]="true"
+                [rows]="5"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} calls"
+              >
+                <ng-template #header>
+                  <tr>
+                    <th style="width: 15%">Prison ID</th>
+                    <th style="width: 20%">Prisoner Name</th>
+                    <th style="width: 15%">Call Type</th>
+                    <th style="width: 15%">Duration</th>
+                    <th style="width: 20%">Connected With</th>
+                    <th style="width: 15%">Action</th>
+                  </tr>
+                </ng-template>
+                <ng-template #body let-call>
+                  <tr>
+                    <td>{{ call.prisonId }}</td>
+                    <td>{{ call.prisonerName }}</td>
+                    <td>
+                      <p-tag
+                        [value]="call.callType | titlecase"
+                        [severity]="call.callType === 'audio' ? 'info' : 'success'"
+                      />
+                    </td>
+                    <td>{{ getCallDuration(call.startTime, call.endTime) }}</td>
+                    <td>{{ call.connectedWith.name }}</td>
+                    <td>
+                      <p-button
+                        icon="pi pi-eye"
+                        [rounded]="true"
+                        [text]="true"
+                        severity="info"
+                        (click)="viewEndedCall(call)"
+                        pTooltip="View Details"
+                        tooltipPosition="top"
+                      />
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template #emptymessage>
+                  <tr>
+                    <td colspan="6" class="text-center">
+                      <div class="empty-state">
+                        <i class="pi pi-inbox"></i>
+                        <p>No ended calls</p>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
     </div>
   </div>
+
+  <!-- Ongoing Call Details Modal -->
+  <p-dialog
+    [(visible)]="showOngoingModal"
+    [header]="'Ongoing Call Details'"
+    [modal]="true"
+    [style]="{ width: '50vw' }"
+    [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+    (onHide)="closeOngoingModal()"
+  >
+    <div *ngIf="selectedOngoingCall" class="call-details">
+      <!-- Prisoner Info -->
+      <div class="detail-section">
+        <h4 class="section-title"><i class="pi pi-user"></i> Prisoner Information</h4>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Prison ID:</span>
+            <span class="value">{{ selectedOngoingCall.prisonId }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Prisoner Name:</span>
+            <span class="value">{{ selectedOngoingCall.prisonerName }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Call Type:</span>
+            <span class="value">
+              <p-tag
+                [value]="selectedOngoingCall.callType | titlecase"
+                [severity]="selectedOngoingCall.callType === 'audio' ? 'info' : 'success'"
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connected With Info -->
+      <div class="detail-section">
+        <h4 class="section-title"><i class="pi pi-users"></i> Connected With</h4>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Name:</span>
+            <span class="value">{{ selectedOngoingCall.connectedWith.name }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Relation:</span>
+            <span class="value">{{ selectedOngoingCall.connectedWith.relation }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Contact Number:</span>
+            <span class="value">{{ selectedOngoingCall.connectedWith.contactNumber }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Elapsed Time -->
+      <div class="detail-section elapsed-time-section">
+        <h4 class="section-title"><i class="pi pi-clock"></i> Call Duration</h4>
+        <div class="elapsed-time-display">
+          <span class="time-value">{{ elapsedTime }}</span>
+          <span class="time-label">Elapsed Time</span>
+        </div>
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <p-button
+        label="Close"
+        icon="pi pi-times"
+        (click)="closeOngoingModal()"
+        severity="secondary"
+      />
+    </ng-template>
+  </p-dialog>
+
+  <!-- Ended Call Details Modal -->
+  <p-dialog
+    [(visible)]="showEndedModal"
+    [header]="'Ended Call Details'"
+    [modal]="true"
+    [style]="{ width: '50vw' }"
+    [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+    (onHide)="closeEndedModal()"
+  >
+    <div *ngIf="selectedEndedCall" class="call-details">
+      <!-- Prisoner Info -->
+      <div class="detail-section">
+        <h4 class="section-title"><i class="pi pi-user"></i> Prisoner Information</h4>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Prison ID:</span>
+            <span class="value">{{ selectedEndedCall.prisonId }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Prisoner Name:</span>
+            <span class="value">{{ selectedEndedCall.prisonerName }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Call Type:</span>
+            <span class="value">
+              <p-tag
+                [value]="selectedEndedCall.callType | titlecase"
+                [severity]="selectedEndedCall.callType === 'audio' ? 'info' : 'success'"
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connected With Info -->
+      <div class="detail-section">
+        <h4 class="section-title"><i class="pi pi-users"></i> Connected With</h4>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Name:</span>
+            <span class="value">{{ selectedEndedCall.connectedWith.name }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Relation:</span>
+            <span class="value">{{ selectedEndedCall.connectedWith.relation }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Contact Number:</span>
+            <span class="value">{{ selectedEndedCall.connectedWith.contactNumber }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Call Duration -->
+      <div class="detail-section duration-section">
+        <h4 class="section-title"><i class="pi pi-history"></i> Call Information</h4>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Start Time:</span>
+            <span class="value">{{ selectedEndedCall.startTime | date: 'medium' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">End Time:</span>
+            <span class="value">{{ selectedEndedCall.endTime | date: 'medium' }}</span>
+          </div>
+          <div class="info-item duration-highlight">
+            <span class="label">Total Duration:</span>
+            <span class="value">{{
+              getCallDuration(selectedEndedCall.startTime, selectedEndedCall.endTime)
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <p-button label="Close" icon="pi pi-times" (click)="closeEndedModal()" severity="secondary" />
+    </ng-template>
+  </p-dialog>
 </div>
