@@ -1,1 +1,38 @@
 @import '../inmate-details/inmate-details.scss';
+
+.contact-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background: #eef2ff;
+  border-radius: 6px;
+  color: #4338ca;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.accordion-header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+
+  .contact-label {
+    font-weight: 600;
+    color: #1e293b;
+  }
+
+  .contact-index {
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    font-weight: normal;
+  }
+}
+
+.add-contact-row {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}

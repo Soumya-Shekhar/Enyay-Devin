@@ -2,9 +2,11 @@ import { Injectable, signal, computed, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { User, LoginRequest, LoginResponse, AuthToken } from '../models';
+import { User, LoginRequest, LoginResponse, AuthToken, UserRole } from '../models';
 import { CookieService } from './cookie.service';
 import { AppConsts } from '../constants/app-consts';
+import { AppSessionService } from './app-session.service';
+import { RoleService } from './role.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +21,10 @@ export class AuthService {
   readonly currentUser = this.currentUserSignal.asReadonly();
   readonly isAuthenticated = this.isAuthenticatedSignal.asReadonly();
   readonly isLoggedOut = computed(() => !this.isAuthenticatedSignal());
+  private appSession = inject(AppSessionService);
+  private roleService = inject(RoleService);
+
+  readonly currentUserRole = this.roleService.currentRole;
 
   login(username: string, password: string, rememberClient = true): Observable<boolean> {
     const body: LoginRequest = {
@@ -28,15 +34,14 @@ export class AuthService {
     };
 
     return this.http
-      .post<LoginResponse>(
-        `${AppConsts.remoteServiceBaseUrl}/api/TokenAuth/Authenticate`,
-        body
-      )
+      .post<LoginResponse>(`${AppConsts.remoteServiceBaseUrl}/api/TokenAuth/Authenticate`, body)
       .pipe(
         map((response) => {
           if (response && response.result && response.result.accessToken) {
             const tokenData: AuthToken = response.result;
             this.setToken(tokenData);
+            // STORE USER ID
+            this.appSession.setUserId(response.result.userId);
             this.isAuthenticatedSignal.set(true);
             return true;
           }
@@ -44,7 +49,7 @@ export class AuthService {
         }),
         catchError(() => {
           return of(false);
-        })
+        }),
       );
   }
 
@@ -55,7 +60,11 @@ export class AuthService {
   setToken(token: AuthToken): void {
     const expireDays = token.expireInSeconds / (60 * 60 * 24);
     this.cookieService.set(AppConsts.authorization.authTokenName, token.accessToken, expireDays);
-    this.cookieService.set(AppConsts.authorization.encryptedAuthTokenName, token.encryptedAccessToken, expireDays);
+    this.cookieService.set(
+      AppConsts.authorization.encryptedAuthTokenName,
+      token.encryptedAccessToken,
+      expireDays,
+    );
     this.isAuthenticatedSignal.set(true);
   }
 
@@ -79,18 +88,17 @@ export class AuthService {
     return !!this.cookieService?.get(AppConsts.authorization.authTokenName);
   }
 
-  setStaticAuth(role: string): void {
-    this.cookieService.set(AppConsts.authorization.authTokenName, `static-${role}-token`, 1);
-    this.isAuthenticatedSignal.set(true);
-  }
+  // setStaticAuth(role: string): void {
+  //   this.cookieService.set(AppConsts.authorization.authTokenName, `static-${role}-token`, 1);
+  //   this.isAuthenticatedSignal.set(true);
+  // }
 
-  getUserRole(): string | null {
-    const token = this.getToken();
-    if (token?.startsWith('static-inmate-')) return 'inmate';
-    return 'admin';
+  getCurrentRole(): Observable<string> {
+    return this.roleService.getCurrentRole(this.appSession.userId());
   }
 
   logout(): void {
     this.removeToken();
+    this.roleService.clearRole();
   }
 }

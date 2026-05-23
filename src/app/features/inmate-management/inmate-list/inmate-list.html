@@ -6,9 +6,9 @@
 
   <div class="table-card">
     <div class="table-toolbar">
-      <input type="text" class="search-input" placeholder="Search inmates..." />
+      <input type="text" class="search-input" placeholder="Search inmates...">
       <button class="btn btn-primary" routerLink="/inmate-management/add-update">
-        + Add Inmate
+        + Inmate & Family Management
       </button>
     </div>
 
@@ -16,38 +16,22 @@
       <table class="data-table">
         <thead>
           <tr>
+            <th>Full Name</th>
             <th>Prison ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <!-- <th>Facility</th> -->
-            <th>Status</th>
-            <th>Admission Date</th>
+            <th>Jail No. / ID</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let inmate of inmates">
-            <td>{{ inmate.id }}</td>
-            <td>{{ inmate.firstName }}</td>
-            <td>{{ inmate.lastName }}</td>
-            <!-- <td>{{ inmate.facility }}</td> -->
-            <td>
-              <span
-                class="status-badge"
-                [ngClass]="{
-                  'status-active': inmate.status === 'Active',
-                  'status-released': inmate.status === 'Released',
-                  'status-transferred': inmate.status === 'Transferred',
-                }"
-                >{{ inmate.status }}</span
-              >
-            </td>
-            <td>{{ inmate.admissionDate }}</td>
-            <td>
-              <button class="btn-icon" title="Edit" routerLink="/inmate-management/add-update">
-                ✏️
-              </button>
-              <!-- <button class="btn-icon" title="View">👁️</button> -->
+            <td>{{ inmate.fullName }}</td>
+            <td>{{ inmate.prisonId }}</td>
+            <td>{{ inmate.jailNo }}</td>
+            <td class="actions-cell">
+              <p-button icon="pi pi-pencil" severity="info" [text]="true" [rounded]="true"
+                pTooltip="Edit" tooltipPosition="top" (onClick)="editInmate(inmate)" />
+              <p-button icon="pi pi-eye" severity="secondary" [text]="true" [rounded]="true"
+                pTooltip="View" tooltipPosition="top" />
             </td>
           </tr>
         </tbody>

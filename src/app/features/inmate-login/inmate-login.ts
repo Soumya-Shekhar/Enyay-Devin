@@ -20,20 +20,20 @@ export class InmateLoginComponent {
   faceScanned = false;
 
   dialAudioCall(): void {
-    if (!this.prisonId) return;
-    this.authService.setStaticAuth('inmate');
+    // if (!this.prisonId) return;
+    // this.authService.setStaticAuth('inmate');
     this.router.navigate(['/inmate-welcome']);
   }
 
   scanThumbprint(): void {
     this.thumbScanned = true;
-    this.authService.setStaticAuth('inmate');
+  //  this.authService.setStaticAuth('inmate');
     this.router.navigate(['/inmate-welcome']);
   }
 
   startVideoCall(): void {
     this.faceScanned = true;
-    this.authService.setStaticAuth('inmate');
+  //  this.authService.setStaticAuth('inmate');
     this.router.navigate(['/inmate-welcome']);
   }
 }

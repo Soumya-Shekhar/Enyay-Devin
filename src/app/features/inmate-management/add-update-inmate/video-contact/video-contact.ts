@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule, FormGroup } from '@angular/forms';
 import { PRIME_NG_MODULES } from '../../../../shared/primeng/primeng-imports';
 import { InmateDataService } from '../inmate-data.service';
 
 @Component({
   selector: 'app-video-contact',
   standalone: true,
-  imports: [CommonModule, FormsModule, ...PRIME_NG_MODULES],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, ...PRIME_NG_MODULES],
   templateUrl: './video-contact.html',
   styleUrls: ['./video-contact.scss'],
 })
 export class VideoContactComponent {
+  save$ = output<void>();
+
   relationOptions = [
     { label: 'Select relation', value: '' },
     { label: 'Father', value: 'Father' },
@@ -28,27 +30,47 @@ export class VideoContactComponent {
 
   constructor(public inmateService: InmateDataService) {}
 
-  get videoContactData() {
-    return this.inmateService.videoContactData;
+  get contacts() {
+    return this.inmateService.videoContacts;
   }
 
-  get videoThumbCaptured() {
-    return this.inmateService.videoThumbCaptured;
+  get selectedIndices() {
+    return this.inmateService.videoSelectedIndices;
   }
 
-  get videoFaceCaptured() {
-    return this.inmateService.videoFaceCaptured;
+  getContactForm(index: number): FormGroup {
+    return this.contacts.at(index) as FormGroup;
   }
 
-  captureThumb(): void {
-    this.inmateService.videoThumbCaptured.set(true);
+  addContact(): void {
+    this.inmateService.addVideoContact();
   }
 
-  captureFace(): void {
-    this.inmateService.videoFaceCaptured.set(true);
+  removeContact(index: number): void {
+    this.inmateService.removeVideoContact(index);
+  }
+
+  toggleSelection(index: number): void {
+    this.inmateService.toggleVideoSelection(index);
+  }
+
+  isSelected(index: number): boolean {
+    return this.selectedIndices().includes(index);
+  }
+
+  isSelectionDisabled(index: number): boolean {
+    return !this.isSelected(index) && this.selectedIndices().length >= 2;
+  }
+
+  getContactLabel(index: number): string {
+    const form = this.getContactForm(index);
+    const name = form.get('fullName')?.value;
+    return name ? `${name}` : `Contact ${index + 1}`;
   }
 
   save(): void {
-    this.inmateService.saveVideoContact();
+    this.contacts.controls.forEach((ctrl) => (ctrl as FormGroup).markAllAsTouched());
+    console.log('Saving video contacts:', this.contacts.value, 'Selected:', this.selectedIndices());
+    this.save$.emit();
   }
 }

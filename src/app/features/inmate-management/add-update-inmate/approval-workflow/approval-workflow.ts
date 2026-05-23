@@ -1,55 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { PRIME_NG_MODULES } from '../../../../shared/primeng/primeng-imports';
 import { InmateDataService } from '../inmate-data.service';
 
 @Component({
   selector: 'app-approval-workflow',
   standalone: true,
-  imports: [CommonModule, FormsModule, ...PRIME_NG_MODULES],
+  imports: [CommonModule, ReactiveFormsModule, ...PRIME_NG_MODULES],
   templateUrl: './approval-workflow.html',
   styleUrls: ['./approval-workflow.scss'],
 })
 export class ApprovalWorkflowComponent {
+  save$ = output<void>();
+
   constructor(public inmateService: InmateDataService) {}
 
-  get approvalData() {
-    return this.inmateService.approvalData;
+  get form() {
+    return this.inmateService.approvalForm;
   }
 
   approveLevel(level: number): void {
-    const data = this.inmateService.approvalData();
     if (level === 1) {
-      this.inmateService.approvalData.set({
-        ...data,
-        level1Status: 'Approved',
-      });
+      this.form.patchValue({ level1Status: 'Approved' });
     } else if (level === 2) {
-      this.inmateService.approvalData.set({
-        ...data,
-        level2Status: 'Approved',
-        finalStatus: 'Approved',
-      });
+      this.form.patchValue({ level2Status: 'Approved', finalStatus: 'Approved' });
     }
   }
 
   rejectLevel(level: number): void {
-    const data = this.inmateService.approvalData();
     if (level === 1) {
-      this.inmateService.approvalData.set({
-        ...data,
-        level1Status: 'Rejected',
-      });
+      this.form.patchValue({ level1Status: 'Rejected' });
     } else if (level === 2) {
-      this.inmateService.approvalData.set({
-        ...data,
-        level2Status: 'Rejected',
-      });
+      this.form.patchValue({ level2Status: 'Rejected' });
     }
   }
 
   save(): void {
-    this.inmateService.saveApprovalWorkflow();
+    this.form.markAllAsTouched();
+    console.log('Saving approval workflow:', this.form.value);
+    this.save$.emit();
   }
 }

@@ -1,70 +1,121 @@
-<div class="section-card">
-  <h3 class="section-title">
-    <span class="section-number">3</span>
-    Family Contact Details - Video Call
-  </h3>
+<div class="video-contact-card">
+  <div class="section-header">
+    <i class="pi pi-video section-icon"></i>
 
-  <div class="form-grid cols-2">
-    <div class="form-field">
-      <label>Full Name <span class="required">*</span></label>
-      <input pInputText type="text" [(ngModel)]="videoContactData().fullName" placeholder="Enter full name" />
-    </div>
-    <div class="form-field">
-      <label>Son / Daughter Of <span class="required">*</span></label>
-      <input pInputText type="text" [(ngModel)]="videoContactData().sonDaughterOf" placeholder="Enter father's / mother's name" />
-    </div>
-    <div class="form-field">
-      <label>Relation <span class="required">*</span></label>
-      <p-select [options]="relationOptions" [(ngModel)]="videoContactData().relation"
-        optionLabel="label" optionValue="value" placeholder="Select relation" styleClass="w-full" />
-    </div>
-    <div class="form-field">
-      <label>Contact Number <span class="required">*</span></label>
-      <p-inputgroup>
-        <p-inputgroup-addon>+91</p-inputgroup-addon>
-        <input pInputText type="text" [(ngModel)]="videoContactData().contactNumber" placeholder="Enter mobile number" />
-      </p-inputgroup>
-    </div>
-    <div class="form-field span-2">
-      <label>eNyay Setu App ID <span class="required">*</span></label>
-      <input pInputText type="text" [(ngModel)]="videoContactData().eNyayAppId" placeholder="Enter eNyay Setu App ID" />
-    </div>
+      <h3>3. Family Contact Details - Video Call</h3>
+      <p>Add up to 3 App IDs</p>
+    
   </div>
 
-  <div class="form-grid cols-1" style="margin-top: 1rem;">
-    <div class="form-field">
-      <label>Aadhar Card <span class="required">*</span></label>
-      <p-fileupload mode="basic" chooseLabel="Upload Aadhar" accept=".pdf,.jpg,.png"
-        [maxFileSize]="2097152" chooseIcon="pi pi-upload" />
-      <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
-    </div>
-    <div class="form-field">
-      <label>SIM Affidavit <span class="required">*</span></label>
-      <p-fileupload mode="basic" chooseLabel="Upload SIM Affidavit" accept=".pdf,.jpg,.png"
-        [maxFileSize]="2097152" chooseIcon="pi pi-upload" />
-      <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
-    </div>
-  </div>
+  <form class="form-wrapper">
 
-  <div class="biometric-row">
-    <div class="biometric-item">
-      <label>Thumb - Biometric <span class="required">*</span></label>
-      <div class="biometric-capture">
-        <p-button label="Capture Thumb" icon="pi pi-camera" severity="secondary" [outlined]="true" (onClick)="captureThumb()" />
-        <i *ngIf="videoThumbCaptured()" class="pi pi-check-circle biometric-ok"></i>
+    <!-- Top Fields -->
+    <div class="grid form-grid">
+
+      <div class="col-12 md:col-6">
+        <div class="field">
+          <label>Full Name <span>*</span></label>
+
+          <input
+            pInputText
+            type="text"
+            placeholder="Enter full name"
+          />
+        </div>
+      </div>
+
+      <div class="col-12 md:col-6">
+        <div class="field">
+          <label>Son / Daughter Of <span>*</span></label>
+
+          <input
+            pInputText
+            type="text"
+            placeholder="Enter father's / mother's name"
+          />
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="field">
+          <label>Relation <span>*</span></label>
+
+          <p-select
+  [options]="relationOptions"
+  optionLabel="label"
+  optionValue="value"
+  placeholder="Select relation"
+  styleClass="w-full">
+</p-select>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- App IDs -->
+    <div class="app-id-section">
+
+      <div class="app-title">
+        eNyay Path App IDs (For Video Call) <span>*</span>
+      </div>
+
+      <div class="app-subtitle">
+        Add up to 3 App IDs
+      </div>
+
+      <div class="app-id-row" *ngFor="let item of [1,2,3]; let i = index">
+
+        <div class="app-label">
+          App ID {{ i + 1 }}
+        </div>
+
+        <div class="app-input">
+          <input
+            pInputText
+            type="text"
+            placeholder="Enter app id"
+          />
+        </div>
+
+        <div class="registered-input">
+          <label>Registered Name</label>
+
+          <input
+            pInputText
+            type="text"
+            placeholder="Enter registered name"
+          />
+        </div>
+
+        <button
+          pButton
+          type="button"
+          icon="pi pi-trash"
+          class="p-button-text p-button-danger delete-btn">
+        </button>
+
       </div>
     </div>
-    <div class="biometric-item">
-      <label>Face Recognition <span class="required">*</span></label>
-      <div class="biometric-capture">
-        <p-button label="Capture Face" icon="pi pi-eye" severity="secondary" [outlined]="true" (onClick)="captureFace()" />
-        <i *ngIf="videoFaceCaptured()" class="pi pi-check-circle biometric-ok"></i>
+
+    <!-- Upload -->
+    <div class="upload-section">
+
+      <label>Aadhar Card <span>*</span></label>
+
+      <div class="upload-row">
+
+        <p-fileUpload
+          mode="basic"
+          chooseLabel="Upload Aadhar"
+          chooseIcon="pi pi-upload"
+          accept=".pdf,.jpg,.jpeg,.png"
+          [auto]="false">
+        </p-fileUpload>
+
+        <small>PDF, JPG, PNG (Max. 2MB)</small>
+
       </div>
     </div>
-  </div>
 
-  <!-- Save Button -->
-  <div class="component-footer">
-    <p-button label="Save Video Contact" icon="pi pi-save" severity="success" (onClick)="save()" />
-  </div>
+  </form>
 </div>

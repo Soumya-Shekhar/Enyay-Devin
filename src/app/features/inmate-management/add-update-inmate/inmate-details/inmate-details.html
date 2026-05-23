@@ -1,91 +1,209 @@
 <div class="section-card">
+
+
+
   <h3 class="section-title">
     <span class="section-number">1</span>
-    Inmate Details <span class="section-subtitle">(Create Login Credential)</span>
+    Inmate Details
+    <span class="section-subtitle">
+      (Create Login Credential)
+    </span>
   </h3>
 
-  <div class="form-grid">
+  <form [formGroup]="form" class="form-grid">
+
+    <!-- FULL NAME -->
     <div class="form-field">
-      <label>Full Name <span class="required">*</span></label>
-      <input pInputText type="text" [(ngModel)]="inmateData().fullName" placeholder="Enter full name" />
+
+      <label>
+        Full Name
+        <span class="required">*</span>
+      </label>
+
+      <input
+        pInputText
+        type="text"
+        formControlName="fullName"
+        placeholder="Enter full name" />
+
     </div>
-    <div class="form-field">
-      <label>Son / Daughter Of <span class="required">*</span></label>
-      <input pInputText type="text" [(ngModel)]="inmateData().sonDaughterOf" placeholder="Enter father's / mother's name" />
+
+      <div class="form-field">
+
+      <label>
+        Alias Name
+        <span class="required">*</span>
+      </label>
+
+      <input
+        pInputText
+        type="text"
+        formControlName="aliasname"
+        placeholder="Enter alias name" />
+
     </div>
+
+    <!-- SON / DAUGHTER -->
     <div class="form-field">
-      <label>Gender <span class="required">*</span></label>
+
+      <label>
+        Son / Daughter Of
+        <span class="required">*</span>
+      </label>
+
+      <input
+        pInputText
+        type="text"
+        formControlName="sonDaughterOf"
+        placeholder="Enter father / mother name" />
+
+    </div>
+
+    <!-- GENDER -->
+    <div class="form-field">
+
+      <label>
+        Gender
+        <span class="required">*</span>
+      </label>
+
       <div class="radio-group">
-        <div *ngFor="let g of genderOptions" class="radio-item">
-          <p-radiobutton [value]="g.value" [(ngModel)]="inmateData().gender" [inputId]="'gender_' + g.value" name="gender" />
-          <label [for]="'gender_' + g.value">{{ g.label }}</label>
+
+        <div
+          *ngFor="let g of genderOptions"
+          class="radio-item">
+
+          <p-radiobutton
+            [value]="g.value"
+            formControlName="gender"
+            [inputId]="'gender_' + g.value"
+            name="gender">
+          </p-radiobutton>
+
+          <label [for]="'gender_' + g.value">
+            {{ g.label }}
+          </label>
+
         </div>
+
       </div>
     </div>
 
+    <!-- JAIL NO -->
     <div class="form-field">
-      <label>Jail No. / ID <span class="required">*</span></label>
-      <input pInputText type="text" [(ngModel)]="inmateData().jailNo" placeholder="Enter jail no. / id" />
-    </div>
-    <div class="form-field">
-      <label>Prison ID <span class="required">*</span></label>
-      <input pInputText type="text" [(ngModel)]="inmateData().prisonId" placeholder="Enter prison id" />
-    </div>
-    <div class="form-field">
-      <label>Upload Photo</label>
-      <p-fileupload mode="basic" chooseLabel="Upload Photo" accept="image/*"
-        [maxFileSize]="2097152" chooseIcon="pi pi-upload" />
-      <small class="hint">JPG, PNG (Max. 2MB)</small>
+
+      <label>Jail No / ID</label>
+
+     <p-select
+          [options]="documentOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Select Document"
+          [(ngModel)]="selectedDocumentType"
+          [ngModelOptions]="{standalone: true}">
+      </p-select>
+
     </div>
 
+    <!-- PRISON ID -->
     <div class="form-field">
-      <label>Aadhar Card <span class="required">*</span></label>
-      <div class="upload-row">
-        <input pInputText type="text" placeholder="Enter Aadhar no." class="flex-input" />
-        <p-fileupload mode="basic" chooseLabel="Upload Aadhar" accept=".pdf,.jpg,.png"
-          [maxFileSize]="2097152" chooseIcon="pi pi-upload" styleClass="upload-btn" />
-      </div>
-      <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
-    </div>
-    <div class="form-field">
-      <label>Passport No.</label>
-      <div class="upload-row">
-        <input pInputText type="text" [(ngModel)]="inmateData().passportNo" placeholder="Enter passport no." class="flex-input" />
-        <p-fileupload mode="basic" chooseLabel="Upload Passport" accept=".pdf,.jpg,.png"
-          [maxFileSize]="2097152" chooseIcon="pi pi-upload" styleClass="upload-btn" />
-      </div>
-      <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
-    </div>
-    <div class="form-field">
-      <label>Driving License No.</label>
-      <div class="upload-row">
-        <input pInputText type="text" [(ngModel)]="inmateData().drivingLicenseNo" placeholder="Enter DL no." class="flex-input" />
-        <p-fileupload mode="basic" chooseLabel="Upload DL" accept=".pdf,.jpg,.png"
-          [maxFileSize]="2097152" chooseIcon="pi pi-upload" styleClass="upload-btn" />
-      </div>
-      <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
-    </div>
-  </div>
 
-  <div class="biometric-row">
-    <div class="biometric-item">
-      <label>Thumb - Biometric <span class="required">*</span></label>
-      <div class="biometric-capture">
-        <p-button label="Capture Thumb" icon="pi pi-camera" severity="secondary" [outlined]="true" (onClick)="captureThumb()" />
-        <i *ngIf="inmateData().thumbCaptured" class="pi pi-check-circle biometric-ok"></i>
-      </div>
-    </div>
-    <div class="biometric-item">
-      <label>Face Recognition <span class="required">*</span></label>
-      <div class="biometric-capture">
-        <p-button label="Capture Face" icon="pi pi-eye" severity="secondary" [outlined]="true" (onClick)="captureFace()" />
-        <i *ngIf="inmateData().faceCaptured" class="pi pi-check-circle biometric-ok"></i>
-      </div>
-    </div>
-  </div>
+      <label>Prison ID</label>
 
-  <!-- Save Button -->
+      <input
+        pInputText
+        type="text"
+        formControlName="prisonId" />
+
+    </div>
+
+    <!-- DOCUMENTS -->
+    <div class="form-field full-width">
+
+      <label>Documents Upload</label>
+
+      <div class="document-upload-row">
+
+        <!-- DOCUMENT TYPE -->
+        <p-select
+          [options]="documentOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Select Document"
+          [(ngModel)]="selectedDocumentType"
+          [ngModelOptions]="{standalone: true}">
+        </p-select>
+
+        <!-- NUMBER -->
+        <input
+          pInputText
+          type="text"
+          [(ngModel)]="documentNumber"
+          [ngModelOptions]="{standalone: true}"
+          placeholder="Enter document number">
+
+        <!-- UPLOAD -->
+        <p-fileupload
+          mode="basic"
+          chooseLabel="Upload"
+          accept=".pdf,.jpg,.png"
+          [maxFileSize]="2097152"
+          chooseIcon="pi pi-upload"
+          (onSelect)="onDocumentUpload($event)">
+        </p-fileupload>
+
+      </div>
+
+    </div>
+
+  </form>
+    <!-- DOCUMENT TABLE -->
+    <div
+      class="table-section"
+      *ngIf="uploadedDocuments.length > 0">
+
+      <p-table [value]="uploadedDocuments">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Document Type</th>
+            <th>Document Number</th>
+            <th>File Name</th>
+            <th>Action</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-doc let-i="rowIndex">
+
+          <tr>
+
+            <td>{{ doc.type }}</td>
+
+            <td>{{ doc.number }}</td>
+
+            <td>{{ doc.fileName }}</td>
+
+            <td>
+
+              <button
+                pButton
+                icon="pi pi-trash"
+                severity="danger"
+                type="button"
+                (click)="removeDocument(i)">
+              </button>
+
+            </td>
+
+          </tr>
+
+        </ng-template>
+
+      </p-table>
+
+    </div>
+
   <div class="component-footer">
-    <p-button label="Save Inmate Details" icon="pi pi-save" severity="success" (onClick)="save()" />
+    <p-button label="Save & Next" icon="pi pi-save" severity="success" (onClick)="save()" />
   </div>
 </div>

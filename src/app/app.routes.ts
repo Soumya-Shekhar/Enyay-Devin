@@ -19,13 +19,13 @@ export const routes: Routes = [
   },
   {
     path: 'inmate-auth',
-    canActivate: [authGuard],
+    canActivate: [noAuthGuard],
     loadComponent: () =>
       import('./features/inmate-auth/inmate-auth').then((m) => m.InmateAuthComponent),
   },
   {
     path: 'inmate-welcome',
-    canActivate: [authGuard],
+    canActivate: [noAuthGuard],
     loadComponent: () =>
       import('./features/inmate-welcome/inmate-welcome').then((m) => m.InmateWelcomeComponent),
   },

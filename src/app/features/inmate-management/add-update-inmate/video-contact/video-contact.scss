@@ -1,1 +1,169 @@
-@import '../inmate-details/inmate-details.scss';
+.video-contact-card {
+  background: #fff;
+  border: 1px solid #ebeaf2;
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+
+  h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #5b3cc4;
+  }
+
+  p {
+    margin: 4px 0 0;
+    color: #7b7b7b;
+    font-size: 13px;
+  }
+}
+
+.section-icon {
+  font-size: 22px;
+  color: #6c4cff;
+}
+
+.form-grid {
+  margin-bottom: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #222;
+
+    span {
+      color: red;
+    }
+  }
+}
+
+:host ::ng-deep {
+  .p-inputtext,
+  .p-dropdown {
+    width: 100%;
+  }
+
+  .p-inputtext {
+    height: 42px;
+    border-radius: 8px;
+  }
+
+  .p-dropdown {
+    height: 42px;
+    align-items: center;
+  }
+}
+
+.app-id-section {
+  margin-top: 12px;
+}
+
+.app-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+
+  span {
+    color: red;
+  }
+}
+
+.app-subtitle {
+  font-size: 13px;
+  color: #777;
+  margin-bottom: 20px;
+}
+
+.app-id-row {
+  display: grid;
+  grid-template-columns: 90px 1fr 1fr 40px;
+  gap: 16px;
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.app-label {
+  font-size: 14px;
+  font-weight: 500;
+  padding-bottom: 10px;
+}
+
+.registered-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    font-size: 13px;
+    font-weight: 500;
+  }
+}
+
+.delete-btn {
+  height: 42px !important;
+  width: 42px !important;
+}
+
+.upload-section {
+  margin-top: 24px;
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 500;
+
+    span {
+      color: red;
+    }
+  }
+}
+
+.upload-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  small {
+    color: #8b8b8b;
+    font-size: 12px;
+  }
+}
+
+:host ::ng-deep {
+  .p-fileupload-basic {
+    .p-button {
+      border-radius: 8px;
+      font-size: 14px;
+    }
+  }
+}
+
+/* Mobile */
+@media screen and (max-width: 768px) {
+
+  .app-id-row {
+    grid-template-columns: 1fr;
+  }
+
+  .app-label {
+    padding-bottom: 0;
+  }
+
+  .upload-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

@@ -1,7 +1,7 @@
 <div class="page-container">
   <div class="page-header">
     <div>
-      <h2>Recent Requests & Status</h2>
+      <h2>Superintendent Dashboard</h2>
       <p class="breadcrumb">Home &gt; Inmate Management &gt; Recent Requests</p>
     </div>
     <div class="header-user">
@@ -10,6 +10,7 @@
     </div>
   </div>
 
+  <!-- Table View -->
   <div class="section-card">
     <h3 class="section-title">
       <span class="section-number">8</span>
@@ -40,7 +41,7 @@
           <td><p-tag [value]="req.adminApproval" [severity]="getStatusSeverity(req.adminApproval)" /></td>
           <td><p-tag [value]="req.superintendentApproval" [severity]="getStatusSeverity(req.superintendentApproval)" /></td>
           <td><p-tag [value]="req.finalStatus" [severity]="getStatusSeverity(req.finalStatus)" /></td>
-          <td><p-button label="View" icon="pi pi-eye" [text]="true" size="small" /></td>
+          <td><p-button label="View" icon="pi pi-eye" [text]="true" size="small" (click)="viewInmateDetails(inmateRecords[0])" /></td>
         </tr>
       </ng-template>
     </p-table>
@@ -49,4 +50,127 @@
       <i class="pi pi-lock"></i> All documents are securely stored and transmissions are encrypted.
     </div>
   </div>
+
+  <!-- Inmate Details Modal Dialog -->
+  <p-dialog 
+    [(visible)]="showInmateDetail" 
+    [header]="'Inmate Details & Approval'" 
+    [modal]="true" 
+    [styleClass]="'inmate-modal'"
+    [style]="{width: '90vw', maxWidth: '1000px'}"
+    [breakpoints]="{'960px': '75vw', '640px': '90vw'}"
+    (onHide)="closeInmateDetail()">
+
+    <div *ngIf="selectedInmate" class="modal-content">
+      <!-- Inmate Information -->
+      <div class="inmate-info-section">
+        <h4 class="modal-section-title">
+          <i class="pi pi-user"></i> Requested Summary
+        </h4>
+        <div class="info-grid-modal">
+          <div class="info-row">
+            <span class="label">Name:</span>
+            <span class="value">{{ selectedInmate.inmate.fullName }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Jail No:</span>
+            <span class="value">{{ selectedInmate.inmate.jailNo }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Prison ID:</span>
+            <span class="value">{{ selectedInmate.inmate.prisonId }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Gender:</span>
+            <span class="value">{{ selectedInmate.inmate.gender }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Aadhar No:</span>
+            <span class="value">{{ selectedInmate.inmate.aadharNo }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Biometric Status:</span>
+            <span class="value">
+              <p-tag 
+                [value]="selectedInmate.inmate.thumbCaptured && selectedInmate.inmate.faceCaptured ? 'Complete' : 'Incomplete'" 
+                [severity]="selectedInmate.inmate.thumbCaptured && selectedInmate.inmate.faceCaptured ? 'success' : 'warn'" />
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audio Contacts -->
+      <div class="contacts-section-modal">
+        <h4 class="modal-section-title">
+          <i class="pi pi-phone"></i> Calling Service Requested
+        </h4>
+        <div class="contacts-list-modal">
+          <div *ngFor="let contact of selectedInmate.audioContacts | slice:0:2" class="contact-item-modal">
+            <div class="contact-header-modal">
+              <span class="contact-name">{{ contact.fullName }}</span>
+              <p-tag 
+                [value]="contact.selected ? 'Selected' : 'Not Selected'" 
+                [severity]="contact.selected ? 'success' : 'info'" 
+                [styleClass]="'contact-tag'" />
+            </div>
+            <div class="contact-details-modal">
+              <p><strong>Relation:</strong> {{ contact.relation }}</p>
+              <p><strong>Contact:</strong> {{ contact.contactNumber }}</p>
+              <p><strong>eNyay App ID:</strong> {{ contact.eNyayAppId || 'Not Assigned' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video Contacts -->
+      <div class="contacts-section-modal">
+        <h4 class="modal-section-title">
+          <i class="pi pi-video"></i> Video Service Requested
+        </h4>
+        <div class="contacts-list-modal">
+          <div *ngFor="let contact of selectedInmate.videoContacts | slice:0:2" class="contact-item-modal">
+            <div class="contact-header-modal">
+              <span class="contact-name">{{ contact.fullName }}</span>
+              <p-tag 
+                [value]="contact.selected ? 'Selected' : 'Not Selected'" 
+                [severity]="contact.selected ? 'success' : 'info'" 
+                [styleClass]="'contact-tag'" />
+            </div>
+            <div class="contact-details-modal">
+              <p><strong>Relation:</strong> {{ contact.relation }}</p>
+              <p><strong>Contact:</strong> {{ contact.contactNumber }}</p>
+              <p><strong>eNyay App ID:</strong> {{ contact.eNyayAppId || 'Not Assigned' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Remarks Section -->
+      <div class="remarks-section-modal">
+        <label class="remarks-label-modal">Add Remarks/Comments</label>
+        <textarea 
+          [(ngModel)]="remarksText" 
+          class="remarks-textarea-modal"
+          placeholder="Enter your remarks..."
+          rows="3"></textarea>
+      </div>
+    </div>
+
+    <!-- Modal Footer with Approve Button -->
+    <ng-template pTemplate="footer">
+      <div class="modal-footer">
+        <p-button 
+          label="Cancel" 
+          icon="pi pi-times" 
+          (click)="closeInmateDetail()" 
+          [text]="true" 
+          severity="secondary" />
+        <p-button 
+          label="Approve" 
+          icon="pi pi-check" 
+          (click)="approveRequest()" 
+          severity="success" />
+      </div>
+    </ng-template>
+  </p-dialog>
 </div>

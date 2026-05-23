@@ -1,0 +1,405 @@
+[
+  {
+    "id": "INM-001",
+    "inmate": {
+      "fullName": "John Doe",
+      "sonDaughterOf": "Richard Doe",
+      "gender": "Male",
+      "jailNo": "JL-2024-0451",
+      "prisonId": "PID-78923",
+      "aadharNo": "4567 8901 2345",
+      "passportNo": "K1234567",
+      "drivingLicenseNo": "DL-0420201234567",
+      "thumbCaptured": true,
+      "faceCaptured": true,
+       "documents": [
+        {
+          "type": "Aadhar Card",
+          "number": "4567 8901 2345",
+          "fileName": "aadhar.pdf"
+        },
+        {
+          "type": "Passport",
+          "number": "K1234567",
+          "fileName": "passport.pdf"
+        },
+        {
+          "type": "Driving License",
+          "number": "DL-0420201234567",
+          "fileName": "dl.pdf"
+        }
+  ]
+    },
+    "audioContacts": [
+      {
+        "fullName": "Mary Doe",
+        "sonDaughterOf": "James Wilson",
+        "relation": "Wife",
+        "contactNumber": "9876543210",
+        "simOwnerName": "Mary Doe",
+        "eNyayAppId": "EN-AUD-00123",
+        "selected": true
+      },
+      {
+        "fullName": "Richard Doe",
+        "sonDaughterOf": "George Doe",
+        "relation": "Father",
+        "contactNumber": "9876000111",
+        "simOwnerName": "Richard Doe",
+        "eNyayAppId": "",
+        "selected": true
+      },
+      {
+        "fullName": "Sarah Doe",
+        "sonDaughterOf": "Richard Doe",
+        "relation": "Sister",
+        "contactNumber": "9876222333",
+        "simOwnerName": "Sarah Doe",
+        "eNyayAppId": "",
+        "selected": false
+      }
+    ],
+    "videoContacts": [
+      {
+        "fullName": "Robert Doe",
+        "sonDaughterOf": "Richard Doe",
+        "relation": "Brother",
+        "contactNumber": "9123456789",
+        "eNyayAppId": "EN-VID-00456",
+        "simOwnerName": "Robert Doe",
+        "selected": true
+      },
+      {
+        "fullName": "Mary Doe",
+        "sonDaughterOf": "James Wilson",
+        "relation": "Wife",
+        "contactNumber": "9876543210",
+        "eNyayAppId": "EN-VID-00457",
+        "simOwnerName": "Mary Doe",
+        "selected": true
+      }
+    ],
+    "approval": {
+      "level1Remarks": "Verified by Jail Admin. Documents are in order.",
+      "level2Remarks": "Approved by Superintendent.",
+      "level1Status": "Approved",
+      "level2Status": "Approved",
+      "finalStatus": "Approved"
+    },
+    "wallet": {
+      "currentBalance": 2500.00,
+      "rechargeAmount": null
+    },
+    "callingFeature": {
+      "audioCalling": true,
+      "videoCalling": true
+    },
+    "deactivation": {
+      "reason": "",
+      "remarks": ""
+    }
+  },
+  {
+    "id": "INM-002",
+    "inmate": {
+      "fullName": "Jane Smith",
+      "sonDaughterOf": "Thomas Smith",
+      "gender": "Female",
+      "jailNo": "JL-2024-0892",
+      "prisonId": "PID-45612",
+      "aadharNo": "2345 6789 0123",
+      "passportNo": "",
+      "drivingLicenseNo": "",
+      "thumbCaptured": true,
+      "faceCaptured": false,
+       "documents": [
+    {
+      "type": "Aadhar Card",
+      "number": "4567 8901 2345",
+      "fileName": "aadhar.pdf"
+    },
+    {
+      "type": "Passport",
+      "number": "K1234567",
+      "fileName": "passport.pdf"
+    },
+    {
+      "type": "Driving License",
+      "number": "DL-0420201234567",
+      "fileName": "dl.pdf"
+    }
+  ]
+    },
+    "audioContacts": [
+      {
+        "fullName": "Thomas Smith",
+        "sonDaughterOf": "George Smith",
+        "relation": "Father",
+        "contactNumber": "8765432109",
+        "simOwnerName": "Thomas Smith",
+        "eNyayAppId": "",
+        "selected": true
+      }
+    ],
+    "videoContacts": [
+      {
+        "fullName": "Sarah Smith",
+        "sonDaughterOf": "Thomas Smith",
+        "relation": "Sister",
+        "contactNumber": "7654321098",
+        "eNyayAppId": "EN-VID-00789",
+        "simOwnerName": "Sarah Smith",
+        "selected": true
+      },
+      {
+        "fullName": "Thomas Smith",
+        "sonDaughterOf": "George Smith",
+        "relation": "Father",
+        "contactNumber": "8765432109",
+        "eNyayAppId": "EN-VID-00790",
+        "simOwnerName": "Thomas Smith",
+        "selected": false
+      }
+    ],
+    "approval": {
+      "level1Remarks": "Documents verified.",
+      "level2Remarks": "",
+      "level1Status": "Approved",
+      "level2Status": "Pending",
+      "finalStatus": "Waiting for approvals"
+    },
+    "wallet": {
+      "currentBalance": 800.00,
+      "rechargeAmount": null
+    },
+    "callingFeature": {
+      "audioCalling": true,
+      "videoCalling": false
+    },
+    "deactivation": {
+      "reason": "",
+      "remarks": ""
+    }
+  },
+  {
+    "id": "INM-003",
+    "inmate": {
+      "fullName": "Robert Brown",
+      "sonDaughterOf": "William Brown",
+      "gender": "Male",
+      "jailNo": "JL-2023-1102",
+      "prisonId": "PID-33210",
+      "aadharNo": "6789 0123 4567",
+      "passportNo": "M9876543",
+      "drivingLicenseNo": "DL-0620198765432",
+      "thumbCaptured": true,
+      "faceCaptured": true,
+       "documents": [
+    {
+      "type": "Aadhar Card",
+      "number": "4567 8901 2345",
+      "fileName": "aadhar.pdf"
+    },
+    {
+      "type": "Passport",
+      "number": "K1234567",
+      "fileName": "passport.pdf"
+    },
+    {
+      "type": "Driving License",
+      "number": "DL-0420201234567",
+      "fileName": "dl.pdf"
+    }
+  ]
+    },
+    "audioContacts": [
+      {
+        "fullName": "Linda Brown",
+        "sonDaughterOf": "Henry Clark",
+        "relation": "Mother",
+        "contactNumber": "9988776655",
+        "simOwnerName": "Linda Brown",
+        "eNyayAppId": "EN-AUD-00321",
+        "selected": true
+      },
+      {
+        "fullName": "David Brown",
+        "sonDaughterOf": "William Brown",
+        "relation": "Son",
+        "contactNumber": "8877665544",
+        "simOwnerName": "David Brown",
+        "eNyayAppId": "",
+        "selected": true
+      }
+    ],
+    "videoContacts": [
+      {
+        "fullName": "David Brown",
+        "sonDaughterOf": "William Brown",
+        "relation": "Son",
+        "contactNumber": "8877665544",
+        "eNyayAppId": "EN-VID-00654",
+        "simOwnerName": "David Brown",
+        "selected": true
+      }
+    ],
+    "approval": {
+      "level1Remarks": "Rejected due to incomplete documents.",
+      "level2Remarks": "",
+      "level1Status": "Rejected",
+      "level2Status": "Pending",
+      "finalStatus": "Waiting for approvals"
+    },
+    "wallet": {
+      "currentBalance": 0,
+      "rechargeAmount": null
+    },
+    "callingFeature": {
+      "audioCalling": false,
+      "videoCalling": false
+    },
+    "deactivation": {
+      "reason": "Court Order",
+      "remarks": "Calling privileges suspended per court order dated 2024-10-15."
+    }
+  },
+  {
+    "id": "INM-004",
+    "inmate": {
+      "fullName": "Emily Davis",
+      "sonDaughterOf": "Michael Davis",
+      "gender": "Female",
+      "jailNo": "JL-2024-0112",
+      "prisonId": "PID-19876",
+      "aadharNo": "1234 5678 9012",
+      "passportNo": "",
+      "drivingLicenseNo": "DL-0920201122334",
+      "thumbCaptured": false,
+      "faceCaptured": false
+    },
+    "audioContacts": [
+      {
+        "fullName": "Michael Davis",
+        "sonDaughterOf": "Frank Davis",
+        "relation": "Father",
+        "contactNumber": "9012345678",
+        "simOwnerName": "Michael Davis",
+        "eNyayAppId": "",
+        "selected": true
+      }
+    ],
+    "videoContacts": [
+      {
+        "fullName": "Anna Davis",
+        "sonDaughterOf": "Michael Davis",
+        "relation": "Sister",
+        "contactNumber": "8901234567",
+        "eNyayAppId": "EN-VID-00987",
+        "simOwnerName": "Anna Davis",
+        "selected": true
+      }
+    ],
+    "approval": {
+      "level1Remarks": "",
+      "level2Remarks": "",
+      "level1Status": "Pending",
+      "level2Status": "Pending",
+      "finalStatus": "Waiting for approvals"
+    },
+    "wallet": {
+      "currentBalance": 1500.00,
+      "rechargeAmount": null
+    },
+    "callingFeature": {
+      "audioCalling": false,
+      "videoCalling": false
+    },
+    "deactivation": {
+      "reason": "",
+      "remarks": ""
+    }
+  },
+  {
+    "id": "INM-005",
+    "inmate": {
+      "fullName": "Michael Wilson",
+      "sonDaughterOf": "Peter Wilson",
+      "gender": "Male",
+      "jailNo": "JL-2025-0228",
+      "prisonId": "PID-55443",
+      "aadharNo": "8901 2345 6789",
+      "passportNo": "P5566778",
+      "drivingLicenseNo": "",
+      "thumbCaptured": true,
+      "faceCaptured": true
+    },
+    "audioContacts": [
+      {
+        "fullName": "Susan Wilson",
+        "sonDaughterOf": "James Harris",
+        "relation": "Wife",
+        "contactNumber": "7788990011",
+        "simOwnerName": "Susan Wilson",
+        "eNyayAppId": "EN-AUD-00555",
+        "selected": true
+      },
+      {
+        "fullName": "Peter Wilson",
+        "sonDaughterOf": "George Wilson",
+        "relation": "Father",
+        "contactNumber": "6677889900",
+        "simOwnerName": "Peter Wilson",
+        "eNyayAppId": "",
+        "selected": false
+      },
+      {
+        "fullName": "Lisa Wilson",
+        "sonDaughterOf": "Peter Wilson",
+        "relation": "Sister",
+        "contactNumber": "5566778899",
+        "simOwnerName": "Lisa Wilson",
+        "eNyayAppId": "",
+        "selected": true
+      }
+    ],
+    "videoContacts": [
+      {
+        "fullName": "Peter Wilson",
+        "sonDaughterOf": "George Wilson",
+        "relation": "Father",
+        "contactNumber": "6677889900",
+        "eNyayAppId": "EN-VID-00888",
+        "simOwnerName": "Peter Wilson",
+        "selected": true
+      },
+      {
+        "fullName": "Susan Wilson",
+        "sonDaughterOf": "James Harris",
+        "relation": "Wife",
+        "contactNumber": "7788990011",
+        "eNyayAppId": "EN-VID-00889",
+        "simOwnerName": "Susan Wilson",
+        "selected": true
+      }
+    ],
+    "approval": {
+      "level1Remarks": "All clear.",
+      "level2Remarks": "Approved.",
+      "level1Status": "Approved",
+      "level2Status": "Approved",
+      "finalStatus": "Approved"
+    },
+    "wallet": {
+      "currentBalance": 3200.00,
+      "rechargeAmount": null
+    },
+    "callingFeature": {
+      "audioCalling": true,
+      "videoCalling": true
+    },
+    "deactivation": {
+      "reason": "",
+      "remarks": ""
+    }
+  }
+]

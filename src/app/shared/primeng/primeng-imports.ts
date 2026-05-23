@@ -5,6 +5,7 @@
 
 // Tabs
 import { TabsModule } from 'primeng/tabs';
+import { AccordionModule } from 'primeng/accordion';
 
 // Form controls
 import { InputTextModule } from 'primeng/inputtext';
@@ -12,6 +13,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { SelectModule } from 'primeng/select';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { CheckboxModule } from 'primeng/checkbox';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 
@@ -39,11 +41,13 @@ import { FluidModule } from 'primeng/fluid';
 
 export const PRIME_NG_MODULES = [
   TabsModule,
+  AccordionModule,
   InputTextModule,
   TextareaModule,
   SelectModule,
   RadioButtonModule,
   ToggleSwitchModule,
+  CheckboxModule,
   InputGroupModule,
   InputGroupAddonModule,
   ButtonModule,

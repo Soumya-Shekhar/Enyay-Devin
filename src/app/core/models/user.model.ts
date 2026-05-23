@@ -31,3 +31,8 @@ export interface AuthToken {
   expireInSeconds: number;
   userId: number;
 }
+
+export interface UserRole {
+  name: string;
+  displayName: string;
+}

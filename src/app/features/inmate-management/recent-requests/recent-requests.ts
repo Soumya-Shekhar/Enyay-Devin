@@ -1,6 +1,45 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
 import { PRIME_NG_MODULES } from '../../../shared/primeng/primeng-imports';
+
+interface Inmate {
+  fullName: string;
+  sonDaughterOf: string;
+  gender: string;
+  jailNo: string;
+  prisonId: string;
+  aadharNo: string;
+  passportNo: string;
+  drivingLicenseNo: string;
+  thumbCaptured: boolean;
+  faceCaptured: boolean;
+}
+
+interface Contact {
+  fullName: string;
+  sonDaughterOf: string;
+  relation: string;
+  contactNumber: string;
+  simOwnerName: string;
+  eNyayAppId: string;
+  selected: boolean;
+}
+
+interface InmateRecord {
+  id: string;
+  inmate: Inmate;
+  audioContacts: Contact[];
+  videoContacts: Contact[];
+  approval?: {
+    level1Remarks: string;
+    level2Remarks: string;
+    level1Status: string;
+    level2Status: string;
+    finalStatus: string;
+  };
+}
 
 interface RecentRequest {
   requestId: string;
@@ -16,11 +55,11 @@ interface RecentRequest {
 @Component({
   selector: 'app-recent-requests',
   standalone: true,
-  imports: [CommonModule, ...PRIME_NG_MODULES],
+  imports: [CommonModule, FormsModule, DialogModule, ...PRIME_NG_MODULES],
   templateUrl: './recent-requests.html',
   styleUrls: ['./recent-requests.scss'],
 })
-export class RecentRequestsComponent {
+export class RecentRequestsComponent implements OnInit {
   recentRequests: RecentRequest[] = [
     {
       requestId: 'REQ12345',
@@ -43,6 +82,122 @@ export class RecentRequestsComponent {
       finalStatus: 'Deactivated',
     },
   ];
+
+  selectedInmate: InmateRecord | null = null;
+  inmateRecords: InmateRecord[] = [];
+  showInmateDetail = false;
+  uploadedFiles: File[] = [];
+  remarksText = '';
+
+  ngOnInit() {
+    this.loadInmateData();
+  }
+
+  loadInmateData() {
+    // This would typically come from an HTTP service
+    this.inmateRecords = [
+      {
+        id: 'INM-001',
+        inmate: {
+          fullName: 'John Doe',
+          sonDaughterOf: 'Richard Doe',
+          gender: 'Male',
+          jailNo: 'JL-2024-0451',
+          prisonId: 'PID-78923',
+          aadharNo: '4567 8901 2345',
+          passportNo: 'K1234567',
+          drivingLicenseNo: 'DL-0420201234567',
+          thumbCaptured: true,
+          faceCaptured: true,
+        },
+        audioContacts: [
+          {
+            fullName: 'Mary Doe',
+            sonDaughterOf: 'James Wilson',
+            relation: 'Wife',
+            contactNumber: '9876543210',
+            simOwnerName: 'Mary Doe',
+            eNyayAppId: 'EN-AUD-00123',
+            selected: true,
+          },
+          {
+            fullName: 'Richard Doe',
+            sonDaughterOf: 'George Doe',
+            relation: 'Father',
+            contactNumber: '9876000111',
+            simOwnerName: 'Richard Doe',
+            eNyayAppId: '',
+            selected: true,
+          },
+          {
+            fullName: 'Sarah Doe',
+            sonDaughterOf: 'Richard Doe',
+            relation: 'Sister',
+            contactNumber: '9876222333',
+            simOwnerName: 'Sarah Doe',
+            eNyayAppId: '',
+            selected: false,
+          },
+        ],
+        videoContacts: [
+          {
+            fullName: 'Robert Doe',
+            sonDaughterOf: 'Richard Doe',
+            relation: 'Brother',
+            contactNumber: '9123456789',
+            eNyayAppId: 'EN-VID-00456',
+            simOwnerName: 'Robert Doe',
+            selected: true,
+          },
+          {
+            fullName: 'Mary Doe',
+            sonDaughterOf: 'James Wilson',
+            relation: 'Wife',
+            contactNumber: '9876543210',
+            eNyayAppId: 'EN-VID-00457',
+            simOwnerName: 'Mary Doe',
+            selected: true,
+          },
+        ],
+        approval: {
+          level1Remarks: 'Verified by Jail Admin. Documents are in order.',
+          level2Remarks: 'Approved by Superintendent.',
+          level1Status: 'Approved',
+          level2Status: 'Approved',
+          finalStatus: 'Approved',
+        },
+      },
+    ];
+  }
+
+  viewInmateDetails(inmate: InmateRecord) {
+    this.selectedInmate = inmate;
+    this.showInmateDetail = true;
+    this.uploadedFiles = [];
+    this.remarksText = '';
+  }
+
+  closeInmateDetail() {
+    this.showInmateDetail = false;
+    this.selectedInmate = null;
+  }
+
+  onFileSelected(event: any) {
+    const files = event.target.files;
+    if (files) {
+      this.uploadedFiles = Array.from(files);
+    }
+  }
+
+  approveRequest() {
+    if (!this.selectedInmate) return;
+    console.log('Approving inmate:', this.selectedInmate.id);
+    console.log('Remarks:', this.remarksText);
+    console.log('Uploaded files:', this.uploadedFiles);
+    // Add your approval logic here
+    alert(`Request approved for ${this.selectedInmate.inmate.fullName}`);
+    this.closeInmateDetail();
+  }
 
   getStatusSeverity(status: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' {
     switch (status) {
