@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -97,6 +97,8 @@ export class InmateDetailsComponent {
     },
   ];
 
+  showPassword = signal(false);
+
   constructor(public inmateService: InmateDataService) {}
 
   get form() {
@@ -188,5 +190,21 @@ export class InmateDetailsComponent {
     );
 
     this.save$.emit();
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword.update((value) => !value);
+  }
+
+  generatePassword(): void {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$!&*';
+
+    const password = Array.from({ length: 12 }, () =>
+      chars.charAt(Math.floor(Math.random() * chars.length)),
+    ).join('');
+
+    this.form.patchValue({
+      password,
+    });
   }
 }

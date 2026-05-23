@@ -96,6 +96,44 @@
       </div>
     </div>
 
+    <!-- PRISON ID -->
+    <div class="form-field">
+      <label>Prison ID</label>
+
+      <input pInputText type="text" formControlName="prisonId" />
+    </div>
+
+    <!-- Password -->
+    <div class="form-field">
+      <label>Password</label>
+
+      <div class="password-wrapper">
+        <input
+          pInputText
+          [type]="showPassword() ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="Enter password"
+        />
+
+        <button
+          pButton
+          type="button"
+          icon="pi pi-refresh"
+          class="p-button-text"
+          (click)="generatePassword()"
+          pTooltip="Generate Password"
+        ></button>
+
+        <button
+          pButton
+          type="button"
+          [icon]="showPassword() ? 'pi pi-eye-slash' : 'pi pi-eye'"
+          class="p-button-text"
+          (click)="togglePasswordVisibility()"
+        ></button>
+      </div>
+    </div>
+
     <!-- JAIL NO -->
     <div class="form-field">
       <label>Jail No / ID</label>
@@ -108,13 +146,6 @@
         formControlName="jailId"
       >
       </p-select>
-    </div>
-
-    <!-- PRISON ID -->
-    <div class="form-field">
-      <label>Prison ID</label>
-
-      <input pInputText type="text" formControlName="prisonId" />
     </div>
 
     <!-- DOCUMENTS -->

@@ -34,6 +34,7 @@ export class InmateDataService {
     aliasname: [''],
     thumbCaptured: [false],
     faceCaptured: [false],
+    password: ['', Validators.required],
   });
 
   // Step 2: Audio Contacts (multiple records)
