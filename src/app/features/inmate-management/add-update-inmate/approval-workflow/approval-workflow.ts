@@ -13,6 +13,11 @@ import { InmateDataService } from '../inmate-data.service';
 })
 export class ApprovalWorkflowComponent {
   save$ = output<void>();
+  uploadedApprovalFile: File | null = null;
+
+  uploadedApprovalFileName = '';
+
+  isApprovalFileUploaded = false;
 
   constructor(public inmateService: InmateDataService) {}
 
@@ -21,18 +26,30 @@ export class ApprovalWorkflowComponent {
   }
 
   approveLevel(level: number): void {
-    if (level === 1) {
-      this.form.patchValue({ level1Status: 'Approved' });
-    } else if (level === 2) {
-      this.form.patchValue({ level2Status: 'Approved', finalStatus: 'Approved' });
+    switch (level) {
+      case 1:
+        this.form.patchValue({ level1Status: 'Approved' });
+        break;
+      case 2:
+        this.form.patchValue({ level2Status: 'Approved' });
+        break;
+      case 3:
+        this.form.patchValue({ level3Status: 'Approved' });
+        break;
     }
   }
 
   rejectLevel(level: number): void {
-    if (level === 1) {
-      this.form.patchValue({ level1Status: 'Rejected' });
-    } else if (level === 2) {
-      this.form.patchValue({ level2Status: 'Rejected' });
+    switch (level) {
+      case 1:
+        this.form.patchValue({ level1Status: 'Rejected' });
+        break;
+      case 2:
+        this.form.patchValue({ level2Status: 'Rejected' });
+        break;
+      case 3:
+        this.form.patchValue({ level3Status: 'Rejected' });
+        break;
     }
   }
 
@@ -40,5 +57,21 @@ export class ApprovalWorkflowComponent {
     this.form.markAllAsTouched();
     console.log('Saving approval workflow:', this.form.value);
     this.save$.emit();
+  }
+
+  onCommonFileUpload(event: any): void {
+    const file = event.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    this.uploadedApprovalFile = file;
+
+    this.uploadedApprovalFileName = file.name;
+
+    this.isApprovalFileUploaded = true;
+
+    console.log('Uploaded common approval file:', file);
   }
 }

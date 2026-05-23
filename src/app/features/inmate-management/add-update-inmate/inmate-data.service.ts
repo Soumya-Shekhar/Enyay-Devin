@@ -65,8 +65,10 @@ export class InmateDataService {
   approvalForm: FormGroup = this.fb.group({
     level1Remarks: [''],
     level2Remarks: [''],
+    level3Remarks: [''],
     level1Status: ['Pending'],
     level2Status: ['Pending'],
+    level3Status: ['Pending'],
     finalStatus: ['Waiting for approvals'],
   });
 
@@ -205,6 +207,7 @@ export class InmateDataService {
     this.approvalForm.reset({
       level1Status: 'Pending',
       level2Status: 'Pending',
+      level3Status: 'Pending',
       finalStatus: 'Waiting for approvals',
     });
     this.walletForm.reset({ currentBalance: 1250.0 });

@@ -1,173 +1,232 @@
 <div class="section-card">
   <h3 class="section-title">
     <span class="section-number">4</span>
-    Approval Workflow <span class="section-subtitle">(Three Level Approval)</span>
+    Approval Workflow
+    <span class="section-subtitle">(Three Level Approval)</span>
   </h3>
 
   <form [formGroup]="form">
     <div class="approval-grid">
-      <div class="approval-card">
-        <div class="approval-header">
-          <h4>Level 1: Jail Admin Approval</h4>
-          <p-tag
-            [value]="form.get('level1Status')?.value"
-            [severity]="
-              form.get('level1Status')?.value === 'Approved'
-                ? 'success'
-                : form.get('level1Status')?.value === 'Rejected'
-                  ? 'danger'
-                  : 'warn'
-            "
-          />
-        </div>
-        <div class="approval-connector">
-          <div class="connector-line"></div>
-          <span class="connector-arrow">&rarr;</span>
-          <div class="connector-line"></div>
-        </div>
-        <div class="approval-body">
-          <div class="form-field">
-            <label>Admin Name</label>
-            <input pInputText placeholder="Enter Admin name" />
-          </div>
-          <div class="form-field">
-            <label>Remarks</label>
-            <textarea
-              pTextarea
-              formControlName="level1Remarks"
-              placeholder="Enter remarks (optional)"
-              rows="3"
-            ></textarea>
-          </div>
-        </div>
-        <div class="approval-actions">
-          <p-button
-            label="Approve"
-            icon="pi pi-check"
-            severity="success"
-            (onClick)="approveLevel(1)"
-          />
-          <p-button
-            label="Reject"
-            icon="pi pi-times"
-            severity="danger"
-            (onClick)="rejectLevel(1)"
-          />
-        </div>
-      </div>
+      <!-- LEVEL 1 -->
 
       <div class="approval-card">
-        <div class="approval-header">
-          <h4>Level 2: AS Approval</h4>
-          <p-tag
-            [value]="form.get('level2Status')?.value"
-            [severity]="
-              form.get('level2Status')?.value === 'Approved'
-                ? 'success'
-                : form.get('level2Status')?.value === 'Rejected'
-                  ? 'danger'
-                  : 'warn'
-            "
-          />
-        </div>
-        <div class="approval-body">
-          <div class="form-field">
-            <label>Forwarding Letter (As) <span class="required">*</span></label>
-            <p-fileupload
-              mode="basic"
-              chooseLabel="Upload Forwarding Letter"
-              accept=".pdf,.jpg,.png"
-              [maxFileSize]="5242880"
-              chooseIcon="pi pi-upload"
+        <div class="card-details">
+          <div class="approval-header">
+            <h4>Jail Admin Approval</h4>
+            <p-tag
+              [value]="form.get('level1Status')?.value"
+              [severity]="
+                form.get('level1Status')?.value === 'Approved'
+                  ? 'success'
+                  : form.get('level1Status')?.value === 'Rejected'
+                    ? 'danger'
+                    : 'warn'
+              "
             />
-            <small class="hint">PDF, JPG, PNG (Max. 5MB)</small>
-          </div>
-          <div class="form-field">
-            <label>As Name</label>
-            <input pInputText placeholder="Enter AS name" />
           </div>
 
-          <div class="form-field">
-            <label>Remarks</label>
-            <textarea
-              pTextarea
-              formControlName="level2Remarks"
-              placeholder="Enter remarks (optional)"
-              rows="3"
-            ></textarea>
+          <!-- <div class="approval-connector">
+            <div class="connector-line"></div>
+
+            <span class="connector-arrow">&rarr;</span>
+
+            <div class="connector-line"></div>
+          </div> -->
+
+          <div class="approval-body">
+            <div class="form-field">
+              <label>Admin Name</label>
+
+              <input pInputText placeholder="Enter Admin name" />
+            </div>
+
+            <div class="form-field">
+              <label>Remarks</label>
+
+              <textarea
+                pTextarea
+                formControlName="level1Remarks"
+                placeholder="Enter remarks (optional)"
+                rows="3"
+              ></textarea>
+            </div>
           </div>
         </div>
-        <div class="approval-actions">
-          <p-button
-            label="Approve"
-            icon="pi pi-check"
-            severity="success"
-            (onClick)="approveLevel(2)"
-          />
-          <p-button
-            label="Reject"
-            icon="pi pi-times"
-            severity="danger"
-            (onClick)="rejectLevel(2)"
-          />
+        <div class="action-button">
+          <div class="approval-actions">
+            <p-button
+              label="Approve"
+              icon="pi pi-check"
+              severity="success"
+              (onClick)="approveLevel(1)"
+            />
+
+            <p-button
+              label="Reject"
+              icon="pi pi-times"
+              severity="danger"
+              (onClick)="rejectLevel(1)"
+            />
+          </div>
         </div>
       </div>
+      <!-- LEVEL 2 : AS APPROVAL -->
 
       <div class="approval-card">
-        <div class="approval-header">
-          <h4>Level 3: DS Approval</h4>
-          <p-tag
-            [value]="form.get('level2Status')?.value"
-            [severity]="
-              form.get('level2Status')?.value === 'Approved'
-                ? 'success'
-                : form.get('level2Status')?.value === 'Rejected'
-                  ? 'danger'
-                  : 'warn'
-            "
-          />
-        </div>
-        <div class="approval-body">
-          <div class="form-field">
-            <label>Forwarding Letter (DS) <span class="required">*</span></label>
-            <p-fileupload
-              mode="basic"
-              chooseLabel="Upload Forwarding Letter"
-              accept=".pdf,.jpg,.png"
-              [maxFileSize]="5242880"
-              chooseIcon="pi pi-upload"
+        <div class="card-details">
+          <div class="approval-header">
+            <h4>AS Approval</h4>
+            <p-tag
+              [value]="form.get('level2Status')?.value"
+              [severity]="
+                form.get('level2Status')?.value === 'Approved'
+                  ? 'success'
+                  : form.get('level2Status')?.value === 'Rejected'
+                    ? 'danger'
+                    : 'warn'
+              "
             />
-            <small class="hint">PDF, JPG, PNG (Max. 5MB)</small>
           </div>
-          <div class="form-field">
-            <label>DS Name</label>
-            <input pInputText placeholder="Enter DS name" />
-          </div>
-          <div class="form-field">
-            <label>Remarks</label>
-            <textarea
-              pTextarea
-              formControlName="level2Remarks"
-              placeholder="Enter remarks (optional)"
-              rows="3"
-            ></textarea>
+
+          <div class="approval-body">
+            <!-- COMMON FILE UPLOAD -->
+
+            <div class="form-field" *ngIf="form.get('level1Status')?.value === 'Approved'">
+              <label>
+                Common Approval Document
+                <span class="required">*</span>
+              </label>
+
+              <p-fileupload
+                mode="basic"
+                chooseLabel="Upload Approval File"
+                accept=".pdf,.jpg,.png"
+                [maxFileSize]="5242880"
+                chooseIcon="pi pi-upload"
+                [auto]="true"
+                customUpload="true"
+                (uploadHandler)="onCommonFileUpload($event)"
+              />
+
+              <small class="hint"> PDF, JPG, PNG (Max. 5MB) </small>
+
+              <div class="uploaded-file" *ngIf="uploadedApprovalFileName">
+                <i class="pi pi-file"></i>
+
+                <span>{{ uploadedApprovalFileName }}</span>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>AS Name</label>
+
+              <input pInputText placeholder="Enter AS name" />
+            </div>
+
+            <div class="form-field">
+              <label>Remarks</label>
+
+              <textarea
+                pTextarea
+                formControlName="level2Remarks"
+                placeholder="Enter remarks (optional)"
+                rows="3"
+              ></textarea>
+            </div>
           </div>
         </div>
-        <div class="approval-actions">
-          <p-button
-            label="Approve"
-            icon="pi pi-check"
-            severity="success"
-            (onClick)="approveLevel(2)"
-          />
-          <p-button
-            label="Reject"
-            icon="pi pi-times"
-            severity="danger"
-            (onClick)="rejectLevel(2)"
-          />
+        <div class="action-button">
+          <div class="approval-actions">
+            <p-button
+              label="Approve"
+              icon="pi pi-check"
+              severity="success"
+              [disabled]="!isApprovalFileUploaded"
+              (onClick)="approveLevel(2)"
+            />
+
+            <p-button
+              label="Reject"
+              icon="pi pi-times"
+              severity="danger"
+              [disabled]="!isApprovalFileUploaded"
+              (onClick)="rejectLevel(2)"
+            />
+          </div>
         </div>
       </div>
+
+      <!-- LEVEL 3 : DS APPROVAL -->
+
+      <div class="approval-card">
+        <div class="card-details">
+          <div class="approval-header">
+            <h4>DS Approval</h4>
+            <p-tag
+              [value]="form.get('level3Status')?.value"
+              [severity]="
+                form.get('level3Status')?.value === 'Approved'
+                  ? 'success'
+                  : form.get('level3Status')?.value === 'Rejected'
+                    ? 'danger'
+                    : 'warn'
+              "
+            />
+          </div>
+
+          <div class="approval-body">
+            <!-- COMMON FILE PREVIEW -->
+
+            <div class="form-field" *ngIf="uploadedApprovalFileName">
+              <label> Uploaded Common Approval File </label>
+
+              <div class="uploaded-file">
+                <i class="pi pi-file"></i>
+
+                <span>{{ uploadedApprovalFileName }}</span>
+              </div>
+            </div>
+
+            <div class="form-field">
+              <label>DS Name</label>
+
+              <input pInputText placeholder="Enter DS name" />
+            </div>
+
+            <div class="form-field">
+              <label>Remarks</label>
+
+              <textarea
+                pTextarea
+                formControlName="level3Remarks"
+                placeholder="Enter remarks (optional)"
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="action-button">
+          <div class="approval-actions">
+            <p-button
+              label="Approve"
+              icon="pi pi-check"
+              severity="success"
+              [disabled]="!isApprovalFileUploaded"
+              (onClick)="approveLevel(3)"
+            />
+
+            <p-button
+              label="Reject"
+              icon="pi pi-times"
+              severity="danger"
+              [disabled]="!isApprovalFileUploaded"
+              (onClick)="rejectLevel(3)"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- FINAL STATUS -->
 
       <div class="final-status-card">
         <h4>Final Status</h4>
