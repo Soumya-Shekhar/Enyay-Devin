@@ -1,9 +1,6 @@
 import { Component, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FormsModule,
-  ReactiveFormsModule
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { PRIME_NG_MODULES } from '../../../../shared/primeng/primeng-imports';
 import { InmateDataService, UploadedDocument } from '../inmate-data.service';
@@ -11,12 +8,7 @@ import { InmateDataService, UploadedDocument } from '../inmate-data.service';
 @Component({
   selector: 'app-inmate-details',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ...PRIME_NG_MODULES
-  ],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ...PRIME_NG_MODULES],
   templateUrl: './inmate-details.html',
   styleUrls: ['./inmate-details.scss'],
 })
@@ -36,20 +28,20 @@ export class InmateDetailsComponent {
   documentOptions = [
     {
       label: 'Photo',
-      value: 'Photo'
+      value: 'Photo',
     },
     {
       label: 'Aadhar Card',
-      value: 'Aadhar Card'
+      value: 'Aadhar Card',
     },
     {
       label: 'Passport',
-      value: 'Passport'
+      value: 'Passport',
     },
     {
       label: 'Driving License',
-      value: 'Driving License'
-    }
+      value: 'Driving License',
+    },
   ];
 
   selectedDocumentType: string = '';
@@ -69,8 +61,8 @@ export class InmateDetailsComponent {
         passportNo: 'K1234567',
         drivingLicenseNo: 'DL-0420201234567',
         thumbCaptured: true,
-        faceCaptured: true
-      }
+        faceCaptured: true,
+      },
     },
     {
       id: 'INM-002',
@@ -84,83 +76,99 @@ export class InmateDetailsComponent {
         passportNo: '',
         drivingLicenseNo: '',
         thumbCaptured: true,
-        faceCaptured: false
-      }
-    }
+        faceCaptured: false,
+      },
+    },
   ];
 
-
-  constructor(
-    public inmateService: InmateDataService
-  ) { }
+  constructor(public inmateService: InmateDataService) {}
 
   get form() {
     return this.inmateService.inmateDetailsForm;
   }
 
-  get uploadedDocuments(): UploadedDocument[] {
-
-  return this.inmateService.uploadedDocuments;
-
-}
-
-
-  onDocumentUpload(event: any): void {
-
-  const file = event.files?.[0];
-
-  if (!file || !this.selectedDocumentType) {
-    return;
+  get photoPreviewUrl(): string | null {
+    return this.inmateService.photoPreviewUrl();
   }
 
-  this.inmateService.uploadedDocuments.push({
-    type: this.selectedDocumentType,
-    number: this.documentNumber,
-    fileName: file.name
-  });
+  get photoFileName(): string {
+    return this.inmateService.photoFileName();
+  }
 
-  // RESET
-  this.selectedDocumentType = '';
-  this.documentNumber = '';
-}
+  get uploadedDocuments(): UploadedDocument[] {
+    return this.inmateService.uploadedDocuments;
+  }
+
+  onPhotoSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+    if (!file || !file.type.startsWith('image/')) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.inmateService.setPhoto(file, reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  removePhoto(): void {
+    this.inmateService.setPhoto(null, null);
+  }
+
+  onDocumentUpload(event: any): void {
+    const file = event.files?.[0];
+
+    if (!file || !this.selectedDocumentType) {
+      return;
+    }
+
+    this.inmateService.uploadedDocuments.push({
+      type: this.selectedDocumentType,
+      number: this.documentNumber,
+      fileName: file.name,
+    });
+
+    // RESET
+    this.selectedDocumentType = '';
+    this.documentNumber = '';
+  }
 
   removeDocument(index: number): void {
-
-this.inmateService.uploadedDocuments.splice(index, 1);  }
+    this.inmateService.uploadedDocuments.splice(index, 1);
+  }
 
   captureThumb(): void {
-
     this.form.patchValue({
-      thumbCaptured: true
+      thumbCaptured: true,
     });
   }
 
   captureFace(): void {
-
     this.form.patchValue({
-      faceCaptured: true
+      faceCaptured: true,
     });
   }
 
   save(): void {
-
     this.form.markAllAsTouched();
 
     const payload = {
-    inmate: {
-      ...this.form.value,
-      documents: this.uploadedDocuments
-    }
-  };
+      inmate: {
+        ...this.form.value,
+        documents: this.uploadedDocuments,
+        photoPreviewUrl: this.photoPreviewUrl,
+        photoFileName: this.photoFileName,
+      },
+    };
 
+    console.log('Saving inmate details:', this.form.value);
+    console.log('Uploaded Documents:', this.uploadedDocuments);
     console.log(
-      'Saving inmate details:',
-      this.form.value
-    );
-
-    console.log(
-      'Uploaded Documents:',
-      this.uploadedDocuments
+      'Inmate photo payload:',
+      payload.inmate.photoFileName,
+      payload.inmate.photoPreviewUrl,
     );
 
     this.save$.emit();

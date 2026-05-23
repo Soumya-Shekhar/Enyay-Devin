@@ -1,9 +1,10 @@
 <div class="login-page">
   <div class="login-card">
     <div class="login-header">
-      <span class="login-logo">🛡️</span>
+      <img [src]="'assets/enyay-logo.png'" alt="Logo" />
+      <!-- <span class="login-logo">🛡️</span>
       <h1 class="login-title">eNyay Path</h1>
-      <p class="login-subtitle">Secure Communication for Inmates</p>
+      <p class="login-subtitle">Secure Communication for Inmates</p> -->
     </div>
 
     <form (ngSubmit)="onSubmit()" class="login-form">
@@ -16,7 +17,8 @@
           placeholder="Enter username"
           [(ngModel)]="username"
           name="username"
-          autocomplete="username">
+          autocomplete="username"
+        />
       </div>
 
       <div class="form-group">
@@ -28,7 +30,8 @@
           placeholder="Enter password"
           [(ngModel)]="password"
           name="password"
-          autocomplete="current-password">
+          autocomplete="current-password"
+        />
       </div>
 
       <div class="error-message" *ngIf="errorMessage">

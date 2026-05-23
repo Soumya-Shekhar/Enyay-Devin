@@ -12,7 +12,7 @@ export interface FamilyContact {
   eNyayAppId: string;
 }
 
-export interface  UploadedDocument {
+export interface UploadedDocument {
   type: string;
   number: string;
   fileName: string;
@@ -49,7 +49,16 @@ export class InmateDataService {
   videoThumbCaptured = signal(false);
   videoFaceCaptured = signal(false);
 
-uploadedDocuments: UploadedDocument[] = [];
+  uploadedDocuments: UploadedDocument[] = [];
+  photoFile: File | null = null;
+  photoPreviewUrl = signal<string | null>(null);
+  photoFileName = signal<string>('');
+
+  setPhoto(file: File | null, previewUrl: string | null): void {
+    this.photoFile = file;
+    this.photoPreviewUrl.set(previewUrl);
+    this.photoFileName.set(file?.name ?? '');
+  }
 
   // Step 4: Approval Workflow
   approvalForm: FormGroup = this.fb.group({
@@ -109,7 +118,9 @@ uploadedDocuments: UploadedDocument[] = [];
   removeAudioContact(index: number): void {
     if (this.audioContacts.length > 1) {
       this.audioContacts.removeAt(index);
-      this.audioSelectedIndices.update((sel) => sel.filter((i) => i !== index).map((i) => (i > index ? i - 1 : i)));
+      this.audioSelectedIndices.update((sel) =>
+        sel.filter((i) => i !== index).map((i) => (i > index ? i - 1 : i)),
+      );
     }
   }
 
@@ -120,7 +131,9 @@ uploadedDocuments: UploadedDocument[] = [];
   removeVideoContact(index: number): void {
     if (this.videoContacts.length > 1) {
       this.videoContacts.removeAt(index);
-      this.videoSelectedIndices.update((sel) => sel.filter((i) => i !== index).map((i) => (i > index ? i - 1 : i)));
+      this.videoSelectedIndices.update((sel) =>
+        sel.filter((i) => i !== index).map((i) => (i > index ? i - 1 : i)),
+      );
     }
   }
 
@@ -159,7 +172,12 @@ uploadedDocuments: UploadedDocument[] = [];
 
   getAllData(): Record<string, unknown> {
     return {
-      inmate: this.inmateDetailsForm.value,
+      inmate: {
+        ...this.inmateDetailsForm.value,
+        photoFile: this.photoFile,
+        photoPreviewUrl: this.photoPreviewUrl(),
+        photoFileName: this.photoFileName(),
+      },
       audioContacts: this.audioContacts.value,
       audioSelected: this.audioSelectedIndices(),
       videoContacts: this.videoContacts.value,
@@ -173,14 +191,21 @@ uploadedDocuments: UploadedDocument[] = [];
 
   resetAll(): void {
     this.inmateDetailsForm.reset({ gender: 'Male', thumbCaptured: false, faceCaptured: false });
-    this.uploadedDocuments = [];  
+    this.uploadedDocuments = [];
+    this.photoFile = null;
+    this.photoPreviewUrl.set(null);
+    this.photoFileName.set('');
     this.audioContacts.clear();
     this.audioContacts.push(this.createAudioContact());
     this.audioSelectedIndices.set([]);
     this.videoContacts.clear();
     this.videoContacts.push(this.createVideoContact());
     this.videoSelectedIndices.set([]);
-    this.approvalForm.reset({ level1Status: 'Pending', level2Status: 'Pending', finalStatus: 'Waiting for approvals' });
+    this.approvalForm.reset({
+      level1Status: 'Pending',
+      level2Status: 'Pending',
+      finalStatus: 'Waiting for approvals',
+    });
     this.walletForm.reset({ currentBalance: 1250.0 });
     this.callingFeatureForm.reset({ audioCalling: false, videoCalling: false });
     this.deactivationForm.reset();
@@ -191,16 +216,18 @@ uploadedDocuments: UploadedDocument[] = [];
   }
 
   patchInmateData(data: Record<string, unknown>): void {
-if (data['inmate']) {
+    if (data['inmate']) {
+      const inmate = data['inmate'] as Record<string, unknown>;
 
-  const inmate =
-    data['inmate'] as Record<string, unknown>;
+      this.inmateDetailsForm.patchValue(inmate);
+      this.uploadedDocuments = (inmate['documents'] as UploadedDocument[]) || [];
 
-  this.inmateDetailsForm.patchValue(inmate);
-
-  this.uploadedDocuments =
-    (inmate['documents'] as UploadedDocument[]) || [];
-}
+      if (inmate['photoPreviewUrl']) {
+        this.photoFile = null;
+        this.photoPreviewUrl.set(inmate['photoPreviewUrl'] as string);
+        this.photoFileName.set((inmate['photoFileName'] as string) || '');
+      }
+    }
     if (data['audioContacts'] && Array.isArray(data['audioContacts'])) {
       this.audioContacts.clear();
       for (const contact of data['audioContacts'] as Record<string, unknown>[]) {
@@ -231,7 +258,9 @@ if (data['inmate']) {
 
     if (data['approval']) this.approvalForm.patchValue(data['approval'] as Record<string, unknown>);
     if (data['wallet']) this.walletForm.patchValue(data['wallet'] as Record<string, unknown>);
-    if (data['callingFeature']) this.callingFeatureForm.patchValue(data['callingFeature'] as Record<string, unknown>);
-    if (data['deactivation']) this.deactivationForm.patchValue(data['deactivation'] as Record<string, unknown>);
+    if (data['callingFeature'])
+      this.callingFeatureForm.patchValue(data['callingFeature'] as Record<string, unknown>);
+    if (data['deactivation'])
+      this.deactivationForm.patchValue(data['deactivation'] as Record<string, unknown>);
   }
 }

@@ -1,129 +1,128 @@
 <div class="section-card">
-
-
-
   <h3 class="section-title">
     <span class="section-number">1</span>
     Inmate Details
-    <span class="section-subtitle">
-      (Create Login Credential)
-    </span>
+    <span class="section-subtitle"> (Create Login Credential) </span>
   </h3>
 
   <form [formGroup]="form" class="form-grid">
+    <div class="form-field photo-field span-2">
+      <label>Photo</label>
 
-    <!-- FULL NAME -->
-    <div class="form-field">
+      <div class="photo-layout">
+        <label class="photo-picker" [class.filled]="photoPreviewUrl">
+          <input type="file" accept="image/*" (change)="onPhotoSelected($event)" />
 
-      <label>
-        Full Name
-        <span class="required">*</span>
-      </label>
+          <ng-container *ngIf="photoPreviewUrl; else photoPlaceholder">
+            <img class="photo-preview" [src]="photoPreviewUrl" alt="Inmate photo preview" />
+            <button
+              type="button"
+              class="photo-delete"
+              (click)="removePhoto(); $event.stopPropagation()"
+            >
+              <i class="pi pi-times"></i>
+            </button>
+          </ng-container>
 
-      <input
-        pInputText
-        type="text"
-        formControlName="fullName"
-        placeholder="Enter full name" />
+          <ng-template #photoPlaceholder>
+            <div class="photo-placeholder">
+              <i class="pi pi-camera"></i>
+              <span>Click to upload</span>
+            </div>
+          </ng-template>
+        </label>
 
-    </div>
+        <div class="photo-right-grid">
+          <div class="photo-field-item">
+            <label>
+              Full Name
+              <span class="required">*</span>
+            </label>
+            <input
+              pInputText
+              type="text"
+              formControlName="fullName"
+              placeholder="Enter full name"
+            />
+          </div>
 
-      <div class="form-field">
+          <div class="photo-field-item">
+            <label>
+              Alias Name
+              <span class="required">*</span>
+            </label>
+            <input
+              pInputText
+              type="text"
+              formControlName="aliasname"
+              placeholder="Enter alias name"
+            />
+          </div>
 
-      <label>
-        Alias Name
-        <span class="required">*</span>
-      </label>
+          <div class="photo-field-item">
+            <label>
+              Son / Daughter Of
+              <span class="required">*</span>
+            </label>
+            <input
+              pInputText
+              type="text"
+              formControlName="sonDaughterOf"
+              placeholder="Enter father / mother name"
+            />
+          </div>
 
-      <input
-        pInputText
-        type="text"
-        formControlName="aliasname"
-        placeholder="Enter alias name" />
-
-    </div>
-
-    <!-- SON / DAUGHTER -->
-    <div class="form-field">
-
-      <label>
-        Son / Daughter Of
-        <span class="required">*</span>
-      </label>
-
-      <input
-        pInputText
-        type="text"
-        formControlName="sonDaughterOf"
-        placeholder="Enter father / mother name" />
-
-    </div>
-
-    <!-- GENDER -->
-    <div class="form-field">
-
-      <label>
-        Gender
-        <span class="required">*</span>
-      </label>
-
-      <div class="radio-group">
-
-        <div
-          *ngFor="let g of genderOptions"
-          class="radio-item">
-
-          <p-radiobutton
-            [value]="g.value"
-            formControlName="gender"
-            [inputId]="'gender_' + g.value"
-            name="gender">
-          </p-radiobutton>
-
-          <label [for]="'gender_' + g.value">
-            {{ g.label }}
-          </label>
-
+          <div class="photo-field-item">
+            <label>
+              Gender
+              <span class="required">*</span>
+            </label>
+            <div class="radio-group">
+              <div *ngFor="let g of genderOptions" class="radio-item">
+                <p-radiobutton
+                  [value]="g.value"
+                  formControlName="gender"
+                  [inputId]="'gender_' + g.value"
+                  name="gender"
+                >
+                </p-radiobutton>
+                <label [for]="'gender_' + g.value">
+                  {{ g.label }}
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
-
       </div>
     </div>
 
     <!-- JAIL NO -->
     <div class="form-field">
-
       <label>Jail No / ID</label>
 
-     <p-select
-          [options]="documentOptions"
-          optionLabel="label"
-          optionValue="value"
-          placeholder="Select Document"
-          [(ngModel)]="selectedDocumentType"
-          [ngModelOptions]="{standalone: true}">
+      <p-select
+        [options]="documentOptions"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Select Document"
+        [(ngModel)]="selectedDocumentType"
+        [ngModelOptions]="{ standalone: true }"
+      >
       </p-select>
-
     </div>
 
     <!-- PRISON ID -->
     <div class="form-field">
-
       <label>Prison ID</label>
 
-      <input
-        pInputText
-        type="text"
-        formControlName="prisonId" />
-
+      <input pInputText type="text" formControlName="prisonId" />
     </div>
 
     <!-- DOCUMENTS -->
     <div class="form-field full-width">
-
       <label>Documents Upload</label>
 
       <div class="document-upload-row">
-
         <!-- DOCUMENT TYPE -->
         <p-select
           [options]="documentOptions"
@@ -131,7 +130,8 @@
           optionValue="value"
           placeholder="Select Document"
           [(ngModel)]="selectedDocumentType"
-          [ngModelOptions]="{standalone: true}">
+          [ngModelOptions]="{ standalone: true }"
+        >
         </p-select>
 
         <!-- NUMBER -->
@@ -139,8 +139,9 @@
           pInputText
           type="text"
           [(ngModel)]="documentNumber"
-          [ngModelOptions]="{standalone: true}"
-          placeholder="Enter document number">
+          [ngModelOptions]="{ standalone: true }"
+          placeholder="Enter document number"
+        />
 
         <!-- UPLOAD -->
         <p-fileupload
@@ -149,59 +150,45 @@
           accept=".pdf,.jpg,.png"
           [maxFileSize]="2097152"
           chooseIcon="pi pi-upload"
-          (onSelect)="onDocumentUpload($event)">
+          (onSelect)="onDocumentUpload($event)"
+        >
         </p-fileupload>
-
       </div>
-
     </div>
-
   </form>
-    <!-- DOCUMENT TABLE -->
-    <div
-      class="table-section"
-      *ngIf="uploadedDocuments.length > 0">
+  <!-- DOCUMENT TABLE -->
+  <div class="table-section" *ngIf="uploadedDocuments.length > 0">
+    <p-table [value]="uploadedDocuments">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Document Type</th>
+          <th>Document Number</th>
+          <th>File Name</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
 
-      <p-table [value]="uploadedDocuments">
+      <ng-template pTemplate="body" let-doc let-i="rowIndex">
+        <tr>
+          <td>{{ doc.type }}</td>
 
-        <ng-template pTemplate="header">
-          <tr>
-            <th>Document Type</th>
-            <th>Document Number</th>
-            <th>File Name</th>
-            <th>Action</th>
-          </tr>
-        </ng-template>
+          <td>{{ doc.number }}</td>
 
-        <ng-template pTemplate="body" let-doc let-i="rowIndex">
+          <td>{{ doc.fileName }}</td>
 
-          <tr>
-
-            <td>{{ doc.type }}</td>
-
-            <td>{{ doc.number }}</td>
-
-            <td>{{ doc.fileName }}</td>
-
-            <td>
-
-              <button
-                pButton
-                icon="pi pi-trash"
-                severity="danger"
-                type="button"
-                (click)="removeDocument(i)">
-              </button>
-
-            </td>
-
-          </tr>
-
-        </ng-template>
-
-      </p-table>
-
-    </div>
+          <td>
+            <button
+              pButton
+              icon="pi pi-trash"
+              severity="danger"
+              type="button"
+              (click)="removeDocument(i)"
+            ></button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 
   <div class="component-footer">
     <p-button label="Save & Next" icon="pi pi-save" severity="success" (onClick)="save()" />
