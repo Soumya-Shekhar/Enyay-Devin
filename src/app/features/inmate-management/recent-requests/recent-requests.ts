@@ -25,6 +25,7 @@ interface Contact {
   simOwnerName: string;
   eNyayAppId: string;
   selected: boolean;
+  approvalStatus?: 'pending' | 'approved' | 'rejected';
 }
 
 interface InmateRecord {
@@ -32,6 +33,7 @@ interface InmateRecord {
   inmate: Inmate;
   audioContacts: Contact[];
   videoContacts: Contact[];
+  documents?: any[];
   approval?: {
     level1Remarks: string;
     level2Remarks: string;
@@ -159,6 +161,32 @@ export class RecentRequestsComponent implements OnInit {
             selected: true,
           },
         ],
+        documents: [
+          {
+            name: 'Aadhar_Card.pdf',
+            size: '1024 KB',
+            type: 'application/pdf',
+            uploadedAt: '2025-05-15 09:30 AM',
+          },
+          {
+            name: 'Prison_ID_Scan.jpg',
+            size: '512 KB',
+            type: 'image/jpeg',
+            uploadedAt: '2025-05-15 09:35 AM',
+          },
+          {
+            name: 'Request_Form.pdf',
+            size: '256 KB',
+            type: 'application/pdf',
+            uploadedAt: '2025-05-16 10:00 AM',
+          },
+          {
+            name: 'Medical_Report.pdf',
+            size: '768 KB',
+            type: 'application/pdf',
+            uploadedAt: '2025-05-16 11:15 AM',
+          },
+        ],
         approval: {
           level1Remarks: 'Verified by Jail Admin. Documents are in order.',
           level2Remarks: 'Approved by Superintendent.',
@@ -189,6 +217,16 @@ export class RecentRequestsComponent implements OnInit {
     }
   }
 
+  approveContact(contact: Contact) {
+    contact.approvalStatus = 'approved';
+    console.log('Approved contact:', contact.fullName);
+  }
+
+  rejectContact(contact: Contact) {
+    contact.approvalStatus = 'rejected';
+    console.log('Rejected contact:', contact.fullName);
+  }
+
   approveRequest() {
     if (!this.selectedInmate) return;
     console.log('Approving inmate:', this.selectedInmate.id);
@@ -199,7 +237,9 @@ export class RecentRequestsComponent implements OnInit {
     this.closeInmateDetail();
   }
 
-  getStatusSeverity(status: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' {
+  getStatusSeverity(
+    status: string,
+  ): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' {
     switch (status) {
       case 'Approved':
         return 'success';

@@ -29,7 +29,7 @@ export class InmateDataService {
     fullName: ['', Validators.required],
     sonDaughterOf: ['', Validators.required],
     gender: ['Male', Validators.required],
-    jailNo: ['', Validators.required],
+    jailId: ['', Validators.required],
     prisonId: ['', Validators.required],
     aliasname: [''],
     thumbCaptured: [false],
