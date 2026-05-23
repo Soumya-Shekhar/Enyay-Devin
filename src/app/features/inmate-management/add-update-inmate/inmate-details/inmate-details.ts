@@ -44,7 +44,23 @@ export class InmateDetailsComponent {
     },
   ];
 
+  jailsOptions = [
+    {
+      label: 'Jail 1',
+      value: 'Jail 1',
+    },
+    {
+      label: 'Jail 2',
+      value: 'Jail 2',
+    },
+    {
+      label: 'Jail 3',
+      value: 'Jail 3',
+    },
+  ];
+
   selectedDocumentType: string = '';
+  selectedJailType: string = '';
 
   documentNumber: string = '';
 

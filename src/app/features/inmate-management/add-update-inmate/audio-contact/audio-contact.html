@@ -15,13 +15,29 @@
       <p-accordionheader>
         <div class="accordion-header-content">
           <span class="checkbox-wrapper" (click)="$event.stopPropagation()">
-            <p-checkbox [binary]="true" [ngModel]="isSelected(i)" (onChange)="toggleSelection(i)"
-              [disabled]="isSelectionDisabled(i)" />
+            <p-checkbox
+              [binary]="true"
+              [ngModel]="isSelected(i)"
+              (onChange)="toggleSelection(i)"
+              [disabled]="isSelectionDisabled(i)"
+            />
           </span>
           <span class="contact-label">{{ getContactLabel(i) }}</span>
           <span class="contact-index">Contact {{ i + 1 }}</span>
-          <p-button *ngIf="contacts.length > 1" icon="pi pi-trash" severity="danger" [text]="true" [rounded]="true"
-            (onClick)="removeContact(i); $event.stopPropagation()" size="small" />
+          <p-tag
+            [value]="getContactStatus(i) | titlecase"
+            [severity]="getStatusSeverity(getContactStatus(i))"
+            styleClass="status-tag"
+          />
+          <p-button
+            *ngIf="contacts.length > 1"
+            icon="pi pi-trash"
+            severity="danger"
+            [text]="true"
+            [rounded]="true"
+            (onClick)="removeContact(i); $event.stopPropagation()"
+            size="small"
+          />
         </div>
       </p-accordionheader>
       <p-accordioncontent>
@@ -29,48 +45,146 @@
           <div class="form-grid cols-2">
             <div class="form-field">
               <label>Full Name <span class="required">*</span></label>
-              <input pInputText type="text" formControlName="fullName" placeholder="Enter full name" />
-              <small class="error" *ngIf="getContactForm(i).get('fullName')?.touched && getContactForm(i).get('fullName')?.hasError('required')">Full name is required</small>
+              <input
+                pInputText
+                type="text"
+                formControlName="fullName"
+                placeholder="Enter full name"
+              />
+              <small
+                class="error"
+                *ngIf="
+                  getContactForm(i).get('fullName')?.touched &&
+                  getContactForm(i).get('fullName')?.hasError('required')
+                "
+                >Full name is required</small
+              >
             </div>
             <div class="form-field">
               <label>Son / Daughter Of <span class="required">*</span></label>
-              <input pInputText type="text" formControlName="sonDaughterOf" placeholder="Enter father's / mother's name" />
-              <small class="error" *ngIf="getContactForm(i).get('sonDaughterOf')?.touched && getContactForm(i).get('sonDaughterOf')?.hasError('required')">This field is required</small>
+              <input
+                pInputText
+                type="text"
+                formControlName="sonDaughterOf"
+                placeholder="Enter father's / mother's name"
+              />
+              <small
+                class="error"
+                *ngIf="
+                  getContactForm(i).get('sonDaughterOf')?.touched &&
+                  getContactForm(i).get('sonDaughterOf')?.hasError('required')
+                "
+                >This field is required</small
+              >
             </div>
             <div class="form-field">
               <label>Relation <span class="required">*</span></label>
-              <p-select [options]="relationOptions" formControlName="relation"
-                optionLabel="label" optionValue="value" placeholder="Select relation" styleClass="w-full" />
-              <small class="error" *ngIf="getContactForm(i).get('relation')?.touched && getContactForm(i).get('relation')?.hasError('required')">Relation is required</small>
+              <p-select
+                [options]="relationOptions"
+                formControlName="relation"
+                optionLabel="label"
+                optionValue="value"
+                placeholder="Select relation"
+                styleClass="w-full"
+              />
+              <small
+                class="error"
+                *ngIf="
+                  getContactForm(i).get('relation')?.touched &&
+                  getContactForm(i).get('relation')?.hasError('required')
+                "
+                >Relation is required</small
+              >
             </div>
             <div class="form-field">
               <label>Contact Number <span class="required">*</span></label>
               <p-inputgroup>
                 <p-inputgroup-addon>+91</p-inputgroup-addon>
-                <input pInputText type="text" formControlName="contactNumber" placeholder="Enter mobile number" />
+                <input
+                  pInputText
+                  type="text"
+                  formControlName="contactNumber"
+                  placeholder="Enter mobile number"
+                />
               </p-inputgroup>
-              <small class="error" *ngIf="getContactForm(i).get('contactNumber')?.touched && getContactForm(i).get('contactNumber')?.hasError('required')">Contact number is required</small>
+              <small
+                class="error"
+                *ngIf="
+                  getContactForm(i).get('contactNumber')?.touched &&
+                  getContactForm(i).get('contactNumber')?.hasError('required')
+                "
+                >Contact number is required</small
+              >
             </div>
           </div>
 
-          <div class="form-grid cols-1" style="margin-top: 1rem;">
+          <div class="form-grid cols-1" style="margin-top: 1rem">
             <div class="form-field">
               <label>Aadhar Card <span class="required">*</span></label>
-              <p-fileupload mode="basic" chooseLabel="Upload Aadhar" accept=".pdf,.jpg,.png"
-                [maxFileSize]="2097152" chooseIcon="pi pi-upload" />
+              <p-fileupload
+                mode="basic"
+                chooseLabel="Upload Aadhar"
+                accept=".pdf,.jpg,.png"
+                [maxFileSize]="2097152"
+                chooseIcon="pi pi-upload"
+              />
               <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
             </div>
             <div class="form-field">
               <label>SIM Owner Name Validation <span class="required">*</span></label>
-              <input pInputText type="text" formControlName="simOwnerName" placeholder="Enter SIM owner name" />
-              <small class="error" *ngIf="getContactForm(i).get('simOwnerName')?.touched && getContactForm(i).get('simOwnerName')?.hasError('required')">SIM owner name is required</small>
+              <input
+                pInputText
+                type="text"
+                formControlName="simOwnerName"
+                placeholder="Enter SIM owner name"
+              />
+              <small
+                class="error"
+                *ngIf="
+                  getContactForm(i).get('simOwnerName')?.touched &&
+                  getContactForm(i).get('simOwnerName')?.hasError('required')
+                "
+                >SIM owner name is required</small
+              >
             </div>
             <div class="form-field">
               <label>SIM Affidavit <span class="required">*</span></label>
-              <p-fileupload mode="basic" chooseLabel="Upload SIM Affidavit" accept=".pdf,.jpg,.png"
-                [maxFileSize]="2097152" chooseIcon="pi pi-upload" />
+              <p-fileupload
+                mode="basic"
+                chooseLabel="Upload SIM Affidavit"
+                accept=".pdf,.jpg,.png"
+                [maxFileSize]="2097152"
+                chooseIcon="pi pi-upload"
+              />
               <small class="hint">PDF, JPG, PNG (Max. 2MB)</small>
             </div>
+          </div>
+
+          <div
+            class="form-actions"
+            *ngIf="getContactStatus(i) !== 'approved' && getContactStatus(i) !== 'rejected'"
+          >
+            <p-button
+              label="Approve"
+              icon="pi pi-check"
+              severity="success"
+              (onClick)="approveContact(i)"
+            />
+            <p-button
+              label="Reject"
+              icon="pi pi-times"
+              severity="danger"
+              (onClick)="rejectContact(i)"
+            />
+          </div>
+          <div
+            class="form-actions"
+            *ngIf="getContactStatus(i) === 'approved' || getContactStatus(i) === 'rejected'"
+          >
+            <p-tag
+              [value]="getContactStatus(i) === 'approved' ? 'Contact Approved' : 'Contact Rejected'"
+              [severity]="getStatusSeverity(getContactStatus(i))"
+            />
           </div>
         </form>
       </p-accordioncontent>
@@ -78,7 +192,14 @@
   </p-accordion>
 
   <div class="add-contact-row">
-    <p-button label="Add Audio Contact" icon="pi pi-plus" severity="secondary" [outlined]="true" (onClick)="addContact()" />
+    <p-button
+      label="Add Audio Contact"
+      icon="pi pi-plus"
+      severity="secondary"
+      [outlined]="true"
+      (onClick)="addContact()"
+      [disabled]="isAddContactDisabled()"
+    />
   </div>
 
   <div class="component-footer">
